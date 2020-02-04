@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+src/Config.js
+src/Media/Phonebook_Long.png
+src/Media/Leaf_TextBelow.png
