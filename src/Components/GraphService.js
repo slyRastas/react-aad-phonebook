@@ -27,8 +27,9 @@ export async function getContacts(accessToken) {
 
     const contacts = await client
         .api(apiString)
-        .select('id,avatar,displayName,mail,userPrincipalName,officeLocation,mobilePhone,businessPhones')
+        .select(config.userDetails)
         .get();
+
     
     return contacts;
 }

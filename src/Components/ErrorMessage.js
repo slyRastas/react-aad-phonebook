@@ -5,7 +5,7 @@ export default class ErrorMessage extends Component {
     render() {
         let debug = null;
         if (this.props.debug) {
-            debug = <pre className="alert-pre border bg-light p-2"><code>this.props.debug</code></pre>;
+            debug = <pre className="alert-pre border bg-light p-2"><code>{this.props.debug}</code></pre>;
         }
         return (
             <Alert color="danger">

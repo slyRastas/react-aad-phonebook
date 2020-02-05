@@ -4,7 +4,7 @@ import { Container } from 'reactstrap'
 import NavigationBar from './Components/NavBar'
 import Welcome from './Components/Welcome'
 import ErrorMessage from './Components/ErrorMessage'
-import AllContactsView from './Components/AllContactsView'
+import AllContactsView from './Components/Contacts/AllContactsView'
 import 'bootstrap/dist/css/bootstrap.css'
 import config from './Config';
 import { UserAgentApplication } from 'msal';
@@ -39,6 +39,8 @@ export default class App extends Component {
       this.getUserProfile()
     }
   }
+
+
 
   async login() {
     try {
@@ -94,7 +96,7 @@ export default class App extends Component {
             displayName: user.displayName,
             email: user.mail || user.userPrincipalName
           },
-          error: {message:"Access Token", debug: accessToken.accessToken}
+          //error: {message:"Access Token", debug: accessToken.accessToken}
         });
       }
     }
@@ -158,10 +160,10 @@ export default class App extends Component {
       </Router>
     );
   }
-
   setErrorMessage(message, debug) {
     this.setState({
       error: {message: message, debug: debug}
     });
   }
+
 }
