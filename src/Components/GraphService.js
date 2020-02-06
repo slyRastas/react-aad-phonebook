@@ -20,16 +20,29 @@ export async function getUserDetails(accessToken) {
     return user;
 }
 
-export async function getContacts(accessToken) {
+export async function getContactsInfo(accessToken) {
     const client = getAuthenticatedClient(accessToken);
 
     const apiString = '/groups/' + config.phonebookGroupId + '/members'
 
-    const contacts = await client
+    const contactsInfo = await client
         .api(apiString)
-        .select(config.userDetails)
+        .select(config.userinfo)
         .get();
 
     
-    return contacts;
+    return contactsInfo;
+}
+
+export async function getContactDetail(accessToken, contactId) {
+    const client = getAuthenticatedClient(accessToken);
+
+    const apiString = '/users/' + contactId;
+
+    const contactDetail = await client
+        .api(apiString)
+        .select(config.userDetails)
+        .get()
+
+    return contactDetail
 }

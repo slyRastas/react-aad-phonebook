@@ -3,8 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
@@ -85,14 +83,7 @@ export default class ContactCard extends Component {
                     title={this.props.contact.displayName + " | " + this.props.contact.jobTitle}
                     subheader={this.props.contact.department + " | " + this.props.contact.officeLocation}
                 />
-                <Dialog open={this.state.isOpen} keepMounted onClose={this.toggleDialog} aria-labelledby='coantact-dialog'>
-                    <DialogTitle id={this.props.contact.id} onClose={this.toggleDialog}>
-                        {this.props.contact.displayName}
-                    </DialogTitle>
-                    <DialogContent dividers>
-                        <ContactCardDetail contact={this.props.contact}/>
-                    </DialogContent>
-                </Dialog>
+                <ContactDialogDetail contact={this.props.contact} isOpen={this.state.isOpen} toggleDialog={this.toggleDialog}/>
             </Card>
         )
     }

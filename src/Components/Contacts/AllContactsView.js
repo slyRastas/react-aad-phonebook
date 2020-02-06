@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import config from '../../Config'
-import { getContacts } from '../GraphService'
+import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
 import { Jumbotron } from 'reactstrap';
@@ -42,7 +42,7 @@ export default class AllContactsView extends Component {
             var accessToken = await window.msal.acquireTokenSilent({
                 scopes: config.scopes
             });
-            var contacts = await getContacts(accessToken);
+            var contacts = await getContactsInfo(accessToken);
             var sortedContacts = sortJsonArray(contacts.value, this.state.sort)
             //Update the array of contacts in state
             this.setState({

@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default class ContactCardDetail extends Component {
+export default class ContactCardDetail extends Component { 
     render() {
         return (
             <List className={useStyles.root}>
@@ -44,7 +44,7 @@ export default class ContactCardDetail extends Component {
                             <Work />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Work Phone" secondary={this.props.contact.businessPhones[0]} />
+                    <ListItemText primary="Work Phone" secondary={this.props.contact.businessPhones} />
                 </ListItem>
                 <Divider variant="inset" component="li" />
                 <ListItem>
