@@ -1,25 +1,10 @@
 import React, { Component } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ContactCardDetail from './ContactCardDetail';
 import config from '../../Config';
 import { getContactDetail } from '../GraphService';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-  closeButton: {
-      position: 'absolute',
-      right: theme.spacing(1),
-      top: theme.spacing(1),
-      color: theme.palette.grey[500],
-  },
-}));
 
 export default class ContactDialogDetail extends Component {
     constructor(props) {

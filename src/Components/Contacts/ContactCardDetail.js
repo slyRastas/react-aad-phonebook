@@ -10,6 +10,7 @@ import { PhoneAndroid,
          Email,
          Business } from '@material-ui/icons'
 import Divider from '@material-ui/core/Divider';
+import FormattedAddress from './FormattedAddress'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,7 +63,7 @@ export default class ContactCardDetail extends Component {
                             <Business />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={this.props.contact.department} />
+                    <ListItemText primary={this.props.contact.department} secondary={<FormattedAddress contact={this.props.contact}/>} component={'span'}/>
                 </ListItem>
             </List>
         )

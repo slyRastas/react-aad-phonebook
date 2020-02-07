@@ -7,10 +7,6 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
 import MoreIcon from '@material-ui/icons/More';
-import ContactCardDetail from './ContactCardDetail'
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 
 import ContactDialogDetail from './ContactDialogDetail'
 
@@ -80,7 +76,7 @@ export default class ContactCard extends Component {
                                 <MoreIcon/>
                             </IconButton>
                     }
-                    title={this.props.contact.displayName + " | " + this.props.contact.jobTitle}
+                    title={this.props.contact.displayName}
                     subheader={this.props.contact.department + " | " + this.props.contact.officeLocation}
                 />
                 <ContactDialogDetail contact={this.props.contact} isOpen={this.state.isOpen} toggleDialog={this.toggleDialog}/>

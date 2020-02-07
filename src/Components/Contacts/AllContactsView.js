@@ -25,12 +25,12 @@ export default class AllContactsView extends Component {
     constructor(props) {
         super(props);
 
-        var userDetails = config.userDetails.split(",")
+        var userInfo = config.userInfo.split(",")
 
         this.state = {
             contacts: [],
             sort: 'displayName',
-            userDetails: userDetails
+            userInfo: userInfo
         };
 
         this.sortContacts = this.sortContacts.bind(this)
@@ -72,13 +72,13 @@ export default class AllContactsView extends Component {
                     <Select
                         labelId="sort-by-label"
                         id="sort-by-select"
-                        value={this.state.sort}
+                        value={ config.userInfoStrings[this.state.sort].values }
                         onChange={this.sortContacts}
                         >
-                            {this.state.userDetails.map(
+                            {config.userInfoStrings.map(
                                 function(sortBy){
                                     return(
-                                        <MenuItem value={sortBy}>{sortBy}</MenuItem>
+                                        <MenuItem value={sortBy.key} key={sortBy.key}>{sortBy.value}</MenuItem>
                                     );
                                 }
                             )}
@@ -89,7 +89,7 @@ export default class AllContactsView extends Component {
                 {this.state.contacts.map(
                     function(contact){
                         return(
-                            <Grid item sm={12} md={6} lg={4}>
+                            <Grid item sm={12} md={6} lg={4} key={contact.id}>
                                 <ContactCard contact={contact} key={contact.id}/>
                             </Grid>
                         );
