@@ -27,7 +27,7 @@ export async function getContactsInfo(accessToken) {
 
     const contactsInfo = await client
         .api(apiString)
-        .select(config.userinfo)
+        .select(config.userInfo)
         .get();
 
     
