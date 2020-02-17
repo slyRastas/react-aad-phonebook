@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import { red } from '@material-ui/core/colors';
+import { blue } from '@material-ui/core/colors';
 import MoreIcon from '@material-ui/icons/More';
 import config from '../../Config';
 import { getContactDetail } from '../GraphService';
@@ -23,7 +23,7 @@ const classes = theme => ({
       transform: 'rotate(180deg)',
     },
     avatar: {
-      backgroundColor: red[500],
+      backgroundColor: blue[500],
     },
   });
 
