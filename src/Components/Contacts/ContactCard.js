@@ -11,13 +11,6 @@ import MoreIcon from '@material-ui/icons/More';
 import ContactDialogDetail from './ContactDialogDetail'
 
 const classes = theme => ({
-    root: {
-      maxWidth: 345,
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
-    },
     expand: {
       transform: 'rotate(0deg)',
       marginLeft: 'auto',
