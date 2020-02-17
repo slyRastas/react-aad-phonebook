@@ -3,48 +3,17 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ContactCardDetail from './ContactCardDetail';
-import config from '../../Config';
-import { getContactDetail } from '../GraphService';
 
-export default class ContactDialogDetail extends Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            isOpen: false,
-            userDetail: []
-        }
-
-        //this.props.toggleDialog = this.props.toggleDialog.bind(this);
-        this.fetchUserDetail = this.fetchUserDetail.bind(this);
-    }
-
-    async fetchUserDetail() {
-        try {
-            //Get user access token.
-            var accessToken = await window.msal.acquireTokenSilent({
-                scopes: config.scopes
-            });
-            var userDetail = await getContactDetail(accessToken, this.props.contact.id);
-            //Update the array of contacts in state
-            this.setState({
-                userDetail: userDetail
-            });
-        }
-        catch(err) {
-            //this.props.showError('ERROR', JSON.stringify(err));
-            console.log(JSON.stringify(err))
-        }
-    }    
-
+export default class ContactDialogDetail extends Component {   
     render() {
         return (
-            <Dialog open={this.props.isOpen} onEnter={this.fetchUserDetail} keepMounted onClose={this.props.toggleDialog} aria-labelledby='contact-dialog'>
-                <DialogTitle id={this.props.contact.id} onClose={this.toggleDialog}>
+            <Dialog open={this.props.isOpen} keepMounted onClose={this.props.toggleDialog} aria-labelledby='contact-dialog'>
+                <DialogTitle id={this.props.contact.id}>
                     {this.props.contact.displayName}
                 </DialogTitle>
                 <DialogContent dividers>
-                    <ContactCardDetail contact={this.state.userDetail}/>
+                    <ContactCardDetail contact={this.props.userDetail}/>
                 </DialogContent>
             </Dialog> 
         )

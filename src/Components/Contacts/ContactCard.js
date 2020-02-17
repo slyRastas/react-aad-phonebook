@@ -7,7 +7,8 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
 import MoreIcon from '@material-ui/icons/More';
-
+import config from '../../Config';
+import { getContactDetail } from '../GraphService';
 import ContactDialogDetail from './ContactDialogDetail'
 
 const classes = theme => ({
@@ -33,10 +34,31 @@ class ContactCard extends Component {
         this.toggle = this.toggle.bind(this)
         this.state = {
             isExpanded: false,
-            isOpen: false
+            isOpen: false,
+            userDetail: [],
         }
         
         this.toggleDialog = this.toggleDialog.bind(this);
+        this.fetchUserDetail = this.fetchUserDetail.bind(this);
+    }
+
+    async fetchUserDetail() {
+        try {
+            //Get user access token.
+            var accessToken = await window.msal.acquireTokenSilent({
+                scopes: config.scopes
+            });
+            var userDetail = await getContactDetail(accessToken, this.props.contact.id);
+            //Update the array of contacts in state
+            this.setState({
+                userDetail: userDetail,
+                isOpen: !this.state.isOpen
+            });
+        }
+        catch(err) {
+            //this.props.showError('ERROR', JSON.stringify(err));
+            console.log(JSON.stringify(err))
+        }
     }
 
     toggle() {
@@ -46,9 +68,15 @@ class ContactCard extends Component {
     }
 
     toggleDialog() {
-        this.setState({
-            isOpen: !this.state.isOpen,
-        });
+        if(!this.state.isOpen){
+            this.fetchUserDetail();
+        }
+        else{
+            this.setState({
+                isOpen: !this.state.isOpen,
+            });
+        }
+        
     }
 
     render() {
@@ -73,7 +101,7 @@ class ContactCard extends Component {
                     title={this.props.contact.displayName}
                     subheader={this.props.contact.department + " | " + this.props.contact.officeLocation}
                 />
-                <ContactDialogDetail contact={this.props.contact} isOpen={this.state.isOpen} toggleDialog={this.toggleDialog}/>
+                <ContactDialogDetail contact={this.props.contact} userDetail={this.state.userDetail} isOpen={this.state.isOpen} toggleDialog={this.toggleDialog}/>
             </Card>
         )
     }
