@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -12,7 +12,7 @@ import { PhoneAndroid,
 import Divider from '@material-ui/core/Divider';
 import FormattedAddress from './FormattedAddress'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = theme => ({
   root: {
     width: '100%',
     maxWidth: 360,
@@ -24,12 +24,13 @@ const useStyles = makeStyles(theme => ({
       height: theme.spacing(16),
     },
   },
-}));
+});
 
-export default class ContactCardDetail extends Component { 
+class ContactCardDetail extends Component { 
     render() {
+        const { classes } = this.props;
         return (
-            <List className={useStyles.root}>
+            <List className={classes.root}>
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar>
@@ -69,3 +70,5 @@ export default class ContactCardDetail extends Component {
         )
     }
 }
+
+export default withStyles(useStyles)(ContactCardDetail)

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -10,7 +10,7 @@ import MoreIcon from '@material-ui/icons/More';
 
 import ContactDialogDetail from './ContactDialogDetail'
 
-const useStyles = makeStyles(theme => ({
+const classes = theme => ({
     root: {
       maxWidth: 345,
     },
@@ -31,9 +31,9 @@ const useStyles = makeStyles(theme => ({
     avatar: {
       backgroundColor: red[500],
     },
-  }));
+  });
 
-export default class ContactCard extends Component {
+class ContactCard extends Component {
     constructor(props) {
         super(props);
 
@@ -59,15 +59,16 @@ export default class ContactCard extends Component {
     }
 
     render() {
+        const { classes } = this.props;
         return (
             <Card>
                 <CardHeader avatar={
-                    <Avatar aria-label={this.props.contact.displayName} className={useStyles.avatar}/>
+                    <Avatar aria-label={this.props.contact.displayName} className={classes.avatar}/>
                     }
                     action={
                         <IconButton
-                            className={clsx(useStyles.expand, {
-                                [useStyles.expandOpen]: this.state.isOpen,
+                            className={clsx(classes.expand, {
+                                [classes.expandOpen]: this.state.isOpen,
                             })}
                             onClick={this.toggleDialog}
                             aria-expanded={this.state.isOpen}
@@ -84,3 +85,5 @@ export default class ContactCard extends Component {
         )
     }
 }
+
+export default withStyles(classes)(ContactCard)

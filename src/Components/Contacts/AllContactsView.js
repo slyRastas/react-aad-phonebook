@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import config from '../../Config'
 import { getContactsInfo } from '../GraphService'
@@ -7,21 +7,21 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
 import { Jumbotron } from 'reactstrap';
 import { Select, FormControl, MenuItem, InputLabel } from '@material-ui/core';
-//import { sortJsonArray } from 'sort-json-array';
+
 
 var sortJsonArray = require('sort-json-array')
 
-const useStyles = makeStyles(theme => ({
+const useStyles = theme => ({
     formControl: {
       margin: theme.spacing(1),
-      minWidth: 120,
+      minWidth: '100px',
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
-  }));
+  });
 
-export default class AllContactsView extends Component {
+class AllContactsView extends Component {
     constructor(props) {
         super(props);
 
@@ -63,25 +63,30 @@ export default class AllContactsView extends Component {
         });
     }
 
+    filters = Object.getOwnPropertyDescriptor(config, "userInfoStrings").value
+
     render() {
+        const { classes } = this.props;
         return (
             <div>
             <Jumbotron>
-                <FormControl className={useStyles.formControl}>
+                <FormControl className={classes.formControl}>
                     <InputLabel id="sort-by-label">Sort By</InputLabel>
                     <Select
+                        className={useStyles}
                         labelId="sort-by-label"
                         id="sort-by-select"
-                        value={ config.userInfoStrings[this.state.sort].values }
+                        value={ Object.entries(config.userInfoStrings)[this.state.sort]  }
                         onChange={this.sortContacts}
                         >
-                            {config.userInfoStrings.map(
-                                function(sortBy){
-                                    return(
-                                        <MenuItem value={sortBy.key} key={sortBy.key}>{sortBy.value}</MenuItem>
-                                    );
-                                }
-                            )}
+                            {
+                            Object.entries(config.userInfoStrings).map(([key, value]) => {
+                                return(
+                                    <MenuItem value={key} key={key}>{value}</MenuItem>
+                                )
+                            }) 
+                            }
+
                         </Select>
                 </FormControl>
             </Jumbotron>
@@ -97,7 +102,8 @@ export default class AllContactsView extends Component {
                 )}
             </Grid>
             </div>
-            //<pre><code>{JSON.stringify(this.state.contacts, null, 2)}</code></pre>
         );
     }
 }
+
+export default withStyles(useStyles)(AllContactsView)
