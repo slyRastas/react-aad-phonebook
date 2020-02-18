@@ -11,10 +11,6 @@ import { UserAgentApplication } from 'msal';
 import { getUserDetails } from './Components/GraphService'
 import withMediaQuery from './Components/HOC/withMediaQuery'
 
-
-//const prefersDarkMode = useMediaQuery('(prefers-colour-scheme: dark)');
-
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -32,8 +28,6 @@ class App extends Component {
     });
 
     var user = this.userAgentApplication.getAccount();
-
-
 
     this.state = {
       isAuthenticated: false,
@@ -56,7 +50,6 @@ class App extends Component {
         }
       );
       await this.getUserProfile();
-
     }
     catch(err) {
       var error = {};
@@ -170,12 +163,6 @@ class App extends Component {
       error: {message: message, debug: debug}
     });
   }
-
 }
-
-//const enhance = compose(
-//  withMediaQuery(prefersDarkMode),
-//  withStyles(theme)
-//)
 
 export default withMediaQuery('(prefers-colour-scheme: dark)')(App);
