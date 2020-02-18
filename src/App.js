@@ -9,8 +9,13 @@ import 'bootstrap/dist/css/bootstrap.css'
 import config from './Config';
 import { UserAgentApplication } from 'msal';
 import { getUserDetails } from './Components/GraphService'
+import withMediaQuery from './Components/HOC/withMediaQuery'
 
-export default class App extends Component {
+
+//const prefersDarkMode = useMediaQuery('(prefers-colour-scheme: dark)');
+
+
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -28,6 +33,8 @@ export default class App extends Component {
 
     var user = this.userAgentApplication.getAccount();
 
+
+
     this.state = {
       isAuthenticated: false,
       user: {},
@@ -39,8 +46,6 @@ export default class App extends Component {
       this.getUserProfile()
     }
   }
-
-
 
   async login() {
     try {
@@ -134,30 +139,30 @@ export default class App extends Component {
     }
 
     return (
-      <Router>
-        <div>
-          <NavigationBar
-            isAuthenticated={this.state.isAuthenticated}
-            authButtonMethod={this.state.isAuthenticated ? this.logout.bind(this) : this.login.bind(this)}
-            user={this.state.user} />
-          <Container>
-            {error}
-            <Route exact path="/"
-              render={(props) => 
-                <Welcome {...props}
-                  isAuthenticated={this.state.isAuthenticated}
-                  user={this.state.user}
-                  authButtonMethod={this.login.bind(this)} />
-                } />
-              <Route exact path="/phonebook"
+        <Router>
+          <div>
+            <NavigationBar
+              isAuthenticated={this.state.isAuthenticated}
+              authButtonMethod={this.state.isAuthenticated ? this.logout.bind(this) : this.login.bind(this)}
+              user={this.state.user} />
+            <Container>
+              {error}
+              <Route exact path="/"
                 render={(props) => 
-                  <AllContactsView {...props}
-                    showError={this.setErrorMessage.bind(this)}
-                    user={this.state.user} />
-                    } />
-          </Container>
-        </div>
-      </Router>
+                  <Welcome {...props}
+                    isAuthenticated={this.state.isAuthenticated}
+                    user={this.state.user}
+                    authButtonMethod={this.login.bind(this)} />
+                  } />
+                <Route exact path="/phonebook"
+                  render={(props) => 
+                    <AllContactsView {...props}
+                      showError={this.setErrorMessage.bind(this)}
+                      user={this.state.user} />
+                      } />
+            </Container>
+          </div>
+        </Router>
     );
   }
   setErrorMessage(message, debug) {
@@ -167,3 +172,10 @@ export default class App extends Component {
   }
 
 }
+
+//const enhance = compose(
+//  withMediaQuery(prefersDarkMode),
+//  withStyles(theme)
+//)
+
+export default withMediaQuery('(prefers-colour-scheme: dark)')(App);
