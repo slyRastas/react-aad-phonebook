@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { Container } from 'reactstrap'
+//import { Container } from 'reactstrap'
+import { Container } from '@material-ui/core'
 import NavigationBar from './Components/NavBar'
 import Welcome from './Components/Welcome'
 import ErrorMessage from './Components/ErrorMessage'
