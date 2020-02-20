@@ -20,29 +20,44 @@ const useStyles = theme => ({
   },
 });
 
+function checkArray(prop) {
+    if (prop !== undefined && prop.length > 0) {
+        return true;
+    }
+    else {return false};
+}
+
 class ContactCardDetail extends Component { 
     render() {
         const { classes } = this.props;
         return (
             <List className={classes.root}>
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar>
-                            <PhoneAndroid />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Mobile Phone" secondary={this.props.contact.mobilePhone} />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar>
-                            <Work />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Work Phone" secondary={this.props.contact.businessPhones} />
-                </ListItem>
-                <Divider variant="inset" component="li" />
+                { (this.props.contact.mobilePhone !== null) && (
+                    <div>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <PhoneAndroid />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Mobile Phone" secondary={this.props.contact.mobilePhone} />
+                        </ListItem>
+                        <Divider variant="inset" component="li" />
+                    </div>
+                )}
+                { (checkArray(this.props.contact.businessPhones)) && (
+                    <div>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <Work />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Work Phone" secondary={this.props.contact.businessPhones} />
+                        </ListItem>
+                        <Divider variant="inset" component="li" />
+                    </div>
+                )}
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar>
