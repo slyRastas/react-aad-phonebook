@@ -82,10 +82,10 @@ class AllContactsView extends Component {
                     <FormControl className={classes.formControl}>
                         <InputLabel id="sort-by-label">Sort By</InputLabel>
                         <Select
-                            className={useStyles}
+                            className={classes.selectEmpty}
                             labelId="sort-by-label"
                             id="sort-by-select"
-                            value={ Object.entries(config.userInfoStrings)[this.state.sort]  }
+                            value={ this.state.sort  }
                             onChange={this.sortContacts}
                         >
                             {
