@@ -132,7 +132,7 @@ class App extends Component {
   render() {
     let error = null;
     if (this.state.error) {
-      error = <ErrorMessage message={this.state.error.message} debug={this.state.error.debug} />;
+      error = <ErrorMessage message={this.state.error.message} debug={this.state.error.debug} />
     }
 
     return (

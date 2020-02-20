@@ -89,6 +89,12 @@ const classes = theme => ({
         padding: theme.spacing(0, 1),
         ...theme.mixins.toolbar,
     },
+    listitem: {
+        padding: '24px',
+        [theme.breakpoints.down('sm')]: {
+            padding: '16px',
+        },
+    }
 });
 
 function UserAvatar(props) {
@@ -217,23 +223,21 @@ class ApplicationBar extends Component {
                             [classes.drawerClose]: !this.state.drawerOpen,
                         }),
                     }}>
-                        <div className={clsx(classes.toolbar, {
-                            [classes.hide]: !this.state.drawerOpen,
-                        })}>
+                        <div className={classes.toolbar}>
                             <IconButton onClick={this.handleDrawerAction}>
                                 <ChevronLeftIcon />
                             </IconButton>
                         </div>
                         <Divider />
                         <List>
-                            <ListItem button key={"home"} component={RouterNavLink} to="/">
+                            <ListItem button className={classes.listitem} key={"home"} component={RouterNavLink} to="/">
                                 <ListItemIcon >
                                     <Home />
                                 </ListItemIcon>
                                 <ListItemText primary="Home" />
                             </ListItem>
                             { this.props.isAuthenticated && (
-                                <ListItem button key={"Phonebook"} component={RouterNavLink} to="/phonebook">
+                                <ListItem button className={classes.listitem} key={"Phonebook"} component={RouterNavLink} to="/phonebook">
                                     <ListItemIcon >
                                         <Contacts/>
                                     </ListItemIcon>
