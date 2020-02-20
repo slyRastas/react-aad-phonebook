@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import clsx from 'clsx';
 import { NavLink as RouterNavLink } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles';
 import {
     AppBar,
     Toolbar,
@@ -9,12 +11,85 @@ import {
     Menu,
     Avatar,
     Button,
+    Drawer,
+    Divider,
 } from '@material-ui/core';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import {
     Home,
     AccountCircle,
     Contacts,
 } from '@material-ui/icons';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import MenuIcon from '@material-ui/icons/Menu'
+
+const drawerWidth = 240;
+
+const classes = theme => ({
+    root: {
+        display: 'flex',
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: 36,
+    },
+    title: {
+        flexGrow: 1,
+    },
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1000,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    appBarShift: {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    hide: {
+        display: 'none',
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+        zIndex: 1000,
+    },
+    drawerOpen: {
+        width: drawerWidth,
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    drawerClose: {
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        overflowX: 'hidden',
+        width: theme.spacing(7) + 1,
+        [theme.breakpoints.up('sm')]: {
+            width: theme.spacing(9) + 1,
+        },
+    },
+    toolbar: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: theme.spacing(0, 1),
+        ...theme.mixins.toolbar,
+    },
+});
 
 function UserAvatar(props) {
     //if user avatar is available, return an img tag with the pic
@@ -25,61 +100,151 @@ function UserAvatar(props) {
     return <AccountCircle />;
 }
 
-function AuthItem(props) {
-    if (props.isAuthenticated) {
-        const [anchorEl, setAnchorEl] = React.useState(null);
 
-        const handleClick = event => {
-            setAnchorEl(event.currentTarget);
+class ApplicationBar extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            anchorEl: null,
+            drawerOpen: false,
         }
 
-        const handleClose = () => {
-            setAnchorEl(null)
-        }
+        this.handleDrawerAction = this.handleDrawerAction.bind(this);
 
-        return (
-            <div>
-                <IconButton
-                    aria-label="Current User Account"
-                    aria-controls="account-appbar"
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                    color="inherit"
-                    >
-                    <UserAvatar />
-                </IconButton>
-                <Menu
-                    id="account-appbar"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                >
-                    <h5 className="dropdown-item-text mb-0">{props.user.displayName}</h5>
-                    <p className="dropdown-item-text text-muted mb-0">{props.user.email}</p>
-                    <MenuItem divider />
-                    <MenuItem onClick={props.authButtonMethod}>Sign Out</MenuItem>
-                </Menu>
-            </div>
-        )
+        this.handleClick = this.handleClick.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        //this.authButtonMethod = props.authButtonMethod();
+    };
+
+    handleDrawerAction() {
+        this.setState({
+            drawerOpen: !this.state.drawerOpen,
+        })
     }
 
-    return(<Button color="inherit" onClick={props.authButtonMethod}>Login</Button>)
-}
+    handleClick(event) {
+        this.setState({
+            anchorEl: event.currentTarget,
+        })
+    }
 
-export default class ApplicationBar extends Component {
+    handleClose() {
+        this.setState({
+            anchorEl: null,
+        })
+    }
+
+    handleLogout() {
+        this.authButtonMethod();
+        this.handleClose();
+    }
+
     render() {
+        const { classes } = this.props;
+        const open = Boolean(this.state.anchorEl);
+
         return (
-            <div>
-                <AppBar position="static">
-                    <Toolbar edge="start" color="inherit" aria-label="menu" aria-controls="menu">
-                        <Home />
-                        <Contacts>
-                            <RouterNavLink to="/" className="nav-link" exact>Home</RouterNavLink>
-                        </Contacts>
+            <div className={classes.root}>
+                <CssBaseline />
+                <AppBar 
+                    position="fixed"
+                    className={clsx(classes.appbar, {
+                        [classes.appBarShift]: this.state.drawerOpen
+                    })}>
+                    <Toolbar >
+                        <IconButton 
+                            color="inherit"
+                            edge="start" 
+                            aria-label="open drawer" 
+                            onClick={this.handleDrawerAction}
+                            className={clsx(classes.menuButton, {
+                                [classes.hide]: this.state.drawerOpen,
+                            })}>
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" noWrap className={classes.title}>
+                            {this.props.title}
+                        </Typography>
+                        { this.props.isAuthenticated && (
+                            <div>
+                            <IconButton
+                                edge="end"
+                                aria-label="Current User Account"
+                                aria-controls="account-appbar"
+                                aria-haspopup="true"
+                                onClick={this.handleClick}
+                                color="inherit"   
+                            >
+                                <UserAvatar user={this.props.user}/>
+                            </IconButton>
+                            <Menu
+                                id="account-appbar"
+                                anchorEl={this.state.anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal:'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal:'right',
+                                }}
+                                open={open}
+                                onClose={this.handleClose}
+                            >
+                                <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                                <MenuItem onClick={() => {this.props.authButtonMethod(); this.handleClose();}}>Logout</MenuItem>
+                            </Menu>
+                            </div>
+                        )}
+                        { !this.props.isAuthenticated && (
+                            <div>
+                            <Button color="inherit" onClick={this.props.authButtonMethod}>Login</Button>
+                            </div>
+                        )}
                     </Toolbar>
                 </AppBar>
+                <Drawer
+                    variant="permanent"
+                    className={clsx(classes.drawer, {
+                        [classes.drawerOpen]: this.state.drawerOpen,
+                        [classes.drawerClose]: !this.state.drawerOpen,
+                    })}
+                    classes={{
+                        paper: clsx({
+                            [classes.drawerOpen]: this.state.drawerOpen,
+                            [classes.drawerClose]: !this.state.drawerOpen,
+                        }),
+                    }}>
+                        <div className={clsx(classes.toolbar, {
+                            [classes.hide]: !this.state.drawerOpen,
+                        })}>
+                            <IconButton onClick={this.handleDrawerAction}>
+                                <ChevronLeftIcon />
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <List>
+                            <ListItem button key={"home"} component={RouterNavLink} to="/">
+                                <ListItemIcon >
+                                    <Home />
+                                </ListItemIcon>
+                                <ListItemText primary="Home" />
+                            </ListItem>
+                            { this.props.isAuthenticated && (
+                                <ListItem button key={"Phonebook"} component={RouterNavLink} to="/phonebook">
+                                    <ListItemIcon >
+                                        <Contacts/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Phonebook" />
+                                </ListItem>
+                            )}
+                        </List>
+                </Drawer>
             </div>
-        )
+        );
     }
 }
+
+export default withStyles(classes)(ApplicationBar)

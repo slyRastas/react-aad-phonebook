@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 //import { Container } from 'reactstrap'
 import { Container } from '@material-ui/core'
-import NavigationBar from './Components/NavBar'
 import Welcome from './Components/Welcome'
 import ErrorMessage from './Components/ErrorMessage'
 import AllContactsView from './Components/Contacts/AllContactsView'
@@ -11,6 +10,10 @@ import config from './Config';
 import { UserAgentApplication } from 'msal';
 import { getUserDetails } from './Components/GraphService'
 import withMediaQuery from './Components/HOC/withMediaQuery'
+import ApplicationBar from './Components/ApplicationBar'
+import { createBrowserHistory } from 'history'
+
+const history = createBrowserHistory();
 
 class App extends Component {
   constructor(props) {
@@ -135,10 +138,11 @@ class App extends Component {
     return (
         <Router>
           <div>
-            <NavigationBar
+            <ApplicationBar
               isAuthenticated={this.state.isAuthenticated}
               authButtonMethod={this.state.isAuthenticated ? this.logout.bind(this) : this.login.bind(this)}
-              user={this.state.user} />
+              user={this.state.user} 
+              title={history.location.pathname} />
             <Container>
               {error}
               <Route exact path="/"
