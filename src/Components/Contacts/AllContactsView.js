@@ -18,6 +18,14 @@ const useStyles = theme => ({
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        [theme.breakpoints.down('sm')]: {
+            paddingLeft: theme.spacing(8)
+        }
+        //marginLeft: theme.drawerWidth + 1,
+      },
   });
 
 class AllContactsView extends Component {
@@ -67,7 +75,7 @@ class AllContactsView extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <div>
+            <div className={classes.content}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Card>
@@ -94,7 +102,7 @@ class AllContactsView extends Component {
                 {this.state.contacts.map(
                     function(contact){
                         return(
-                            <Grid item sm={12} md={6} lg={4} key={contact.id}>
+                            <Grid item xs={12} sm={12} md={6} lg={4} key={contact.id}>
                                 <ContactCard contact={contact} key={contact.id}/>
                             </Grid>
                         );
