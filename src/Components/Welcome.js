@@ -2,14 +2,25 @@ import React, { Component } from 'react'
 import{
     Button,
     Paper,
-    Typography
 } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
+import Phonebook_Long from '../Media/Phonebook_Long.png'
 
 const classes = theme => ({
     content: {
-      padding: '16px',
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        [theme.breakpoints.down('sm')]: {
+            //paddingLeft: theme.spacing(8),
+            marginLeft: theme.spacing(8),
+        }
     },
+    img: {
+        height: '64px',
+        [theme.breakpoints.down('sm')]: {
+            height: '24px'
+        }
+    }
   });
 
 function WelcomeContent(props) {
@@ -32,7 +43,7 @@ class Welcome extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.content}>
-                <Typography variant="h1">Phonebook</Typography>
+                <img src={Phonebook_Long} alt="Rainvale Phonebook Logo" className={classes.img}/>
                 <p className="lead">
                     This is the company phonebook. Use it to find the contact details of your beloved co-workers.
                 </p>
