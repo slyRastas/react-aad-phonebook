@@ -43,7 +43,6 @@ const classes = theme => ({
         flexGrow: 1,
     },
     appBar: {
-        zIndex: theme.zIndex.drawer + 1000,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
