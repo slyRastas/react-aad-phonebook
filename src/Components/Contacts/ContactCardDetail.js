@@ -27,6 +27,10 @@ function checkArray(prop) {
     else {return false};
 }
 
+function ListItemLink(props) {
+    return <ListItem button component="a" {...props} />;
+}
+
 class ContactCardDetail extends Component { 
     render() {
         const { classes } = this.props;
@@ -34,38 +38,38 @@ class ContactCardDetail extends Component {
             <List className={classes.root}>
                 { (this.props.contact.mobilePhone !== null) && (
                     <div>
-                        <ListItem>
+                        <ListItemLink href={"tel:" + this.props.contact.mobilePhone}>
                             <ListItemAvatar>
                                 <Avatar>
                                     <PhoneAndroid />
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText primary="Mobile Phone" secondary={this.props.contact.mobilePhone} />
-                        </ListItem>
+                        </ListItemLink>
                         <Divider variant="inset" component="li" />
                     </div>
                 )}
                 { (checkArray(this.props.contact.businessPhones)) && (
                     <div>
-                        <ListItem>
+                        <ListItemLink href={"tel:" + this.props.contact.businessPhones}>
                             <ListItemAvatar>
                                 <Avatar>
                                     <Work />
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText primary="Work Phone" secondary={this.props.contact.businessPhones} />
-                        </ListItem>
+                        </ListItemLink>
                         <Divider variant="inset" component="li" />
                     </div>
                 )}
-                <ListItem>
+                <ListItemLink href={"mailto:" + this.props.contact.userPrincipalName}>
                     <ListItemAvatar>
                         <Avatar>
                             <Email />
                         </Avatar>
                     </ListItemAvatar>
                     <ListItemText primary={this.props.contact.userPrincipalName} />
-                </ListItem>
+                </ListItemLink>
                 <Divider variant="inset" component="li" />
                 <ListItem>
                     <ListItemAvatar>
