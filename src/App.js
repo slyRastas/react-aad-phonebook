@@ -99,6 +99,7 @@ class App extends Component {
             displayName: user.displayName,
             email: user.mail || user.userPrincipalName
           },
+          error: null,
           //error: {message:"Access Token", debug: accessToken.accessToken}
         });
       }
