@@ -26,6 +26,8 @@ import {
 } from '@material-ui/icons';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu'
+import { compose } from 'recompose'
+import { withRouter } from 'react-router'
 
 const drawerWidth = 240;
 
@@ -171,7 +173,7 @@ class ApplicationBar extends Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap className={classes.title}>
-                            {this.props.title}
+                            {(this.props.location.pathname === "/phonebook") ? "Phonebook" : "Home"}
                         </Typography>
                         { this.props.isAuthenticated && (
                             <div>
@@ -252,4 +254,6 @@ class ApplicationBar extends Component {
     }
 }
 
-export default withStyles(classes)(ApplicationBar)
+//export default withStyles(classes)(ApplicationBar)
+
+export default compose(withStyles(classes), withRouter)(ApplicationBar)

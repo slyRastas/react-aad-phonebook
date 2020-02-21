@@ -13,8 +13,6 @@ import withMediaQuery from './Components/HOC/withMediaQuery'
 import ApplicationBar from './Components/ApplicationBar'
 import { createBrowserHistory } from 'history'
 
-const history = createBrowserHistory();
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -33,10 +31,13 @@ class App extends Component {
 
     var user = this.userAgentApplication.getAccount();
 
+    var history = createBrowserHistory();
+
     this.state = {
       isAuthenticated: false,
       user: {},
-      error: null
+      error: null,
+      history: history,
     };
 
     if (user) {
@@ -141,8 +142,7 @@ class App extends Component {
             <ApplicationBar
               isAuthenticated={this.state.isAuthenticated}
               authButtonMethod={this.state.isAuthenticated ? this.logout.bind(this) : this.login.bind(this)}
-              user={this.state.user} 
-              title={history.location.pathname} />
+              user={this.state.user} />
             <Container>
               {error}
               <Route exact path="/"
