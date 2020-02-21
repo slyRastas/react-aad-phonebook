@@ -12,6 +12,7 @@ import { getUserDetails } from './Components/GraphService'
 import withMediaQuery from './Components/HOC/withMediaQuery'
 import ApplicationBar from './Components/ApplicationBar'
 import { createBrowserHistory } from 'history'
+import AllOfficeView from './Components/Contacts/AllOfficeView'
 
 class App extends Component {
   constructor(props) {
@@ -159,6 +160,12 @@ class App extends Component {
                       showError={this.setErrorMessage.bind(this)}
                       user={this.state.user} />
                       } />
+                <Route exact path="/offices"
+                  render={(props) =>
+                    <AllOfficeView {...props}
+                      showError={this.setErrorMessage.bind(this)}
+                      user={this.state.user} />
+                    } />
             </Container>
           </div>
         </Router>
