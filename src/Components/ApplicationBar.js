@@ -46,6 +46,7 @@ const classes = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        background: 'linear-gradient(45deg, #00A5D8 30%, #6D6E71 90%)',
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -155,7 +156,7 @@ class ApplicationBar extends Component {
                 <CssBaseline />
                 <AppBar 
                     position="fixed"
-                    className={clsx(classes.appbar, {
+                    className={clsx(classes.appBar, {
                         [classes.appBarShift]: this.state.drawerOpen
                     })}>
                     <Toolbar >
