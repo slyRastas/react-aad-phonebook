@@ -152,7 +152,7 @@ class App extends Component {
                     user={this.state.user}
                     authButtonMethod={this.login.bind(this)} />
                   } />
-                <Route exact path="/phonebook"
+                <Route exact path="/people"
                   render={(props) => 
                     <AllContactsView {...props}
                       showError={this.setErrorMessage.bind(this)}

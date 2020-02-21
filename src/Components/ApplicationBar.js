@@ -173,7 +173,7 @@ class ApplicationBar extends Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap className={classes.title}>
-                            {(this.props.location.pathname === "/phonebook") ? "Phonebook" : "Home"}
+                            {(this.props.location.pathname === "/people") ? "People" : "Home"}
                         </Typography>
                         { this.props.isAuthenticated && (
                             <div>
@@ -240,7 +240,7 @@ class ApplicationBar extends Component {
                                 <ListItemText primary="Home" />
                             </ListItem>
                             { this.props.isAuthenticated && (
-                                <ListItem button className={classes.listitem} key={"Phonebook"} component={RouterNavLink} to="/phonebook">
+                                <ListItem button className={classes.listitem} key={"People"} component={RouterNavLink} to="/people">
                                     <ListItemIcon >
                                         <Contacts/>
                                     </ListItemIcon>
