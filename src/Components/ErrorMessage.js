@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {
-    Button,
     Snackbar,
 } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
@@ -36,10 +35,6 @@ class ErrorMessage extends Component {
     }
 
     render() {
-        let debug = null;
-        if (this.props.debug) {
-            debug = <pre className="alert-pre border bg-light p-2"><code>{this.props.debug}</code></pre>;
-        }
         return (
             <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleClick}>
                 <Alert onClose={this.handleClick} severity="error">
