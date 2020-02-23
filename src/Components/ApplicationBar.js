@@ -23,6 +23,7 @@ import {
     Home,
     AccountCircle,
     Contacts,
+    Business
 } from '@material-ui/icons';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu'
@@ -239,12 +240,20 @@ class ApplicationBar extends Component {
                                 <ListItemText primary="Home" />
                             </ListItem>
                             { this.props.isAuthenticated && (
+                                <div>
                                 <ListItem button className={classes.listitem} key={"People"} component={RouterNavLink} to="/people">
                                     <ListItemIcon >
                                         <Contacts/>
                                     </ListItemIcon>
-                                    <ListItemText primary="Phonebook" />
+                                    <ListItemText primary="People" />
                                 </ListItem>
+                                <ListItem button className={classes.listitem} key={"Offices"} component={RouterNavLink} to="/offices">
+                                    <ListItemIcon>
+                                        <Business />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Offices" />
+                                </ListItem>
+                                </div>
                             )}
                         </List>
                 </Drawer>
