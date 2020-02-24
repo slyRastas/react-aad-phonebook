@@ -23,7 +23,8 @@ const classes = theme => ({
       transform: 'rotate(180deg)',
     },
     avatar: {
-      backgroundColor: blue[500],
+        color: theme.palette.getContrastText(blue[500]),
+        backgroundColor: blue[500],
     },
   });
 
@@ -84,7 +85,7 @@ class ContactCard extends Component {
         return (
             <Card>
                 <CardHeader avatar={
-                    <Avatar aria-label={this.props.contact.displayName} className={classes.avatar}/>
+                    <Avatar alt={this.props.contact.displayName} src='/broken.jpg' aria-label={this.props.contact.displayName} className={classes.avatar}/>
                     }
                     action={
                         <IconButton

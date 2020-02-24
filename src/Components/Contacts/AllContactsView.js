@@ -86,7 +86,7 @@ class AllContactsView extends Component {
                             labelId="sort-by-label"
                             id="sort-by-select"
                             value={ this.state.sort  }
-                            onChange={this.sortContacts}
+                            onChange={ this.sortContacts }
                         >
                             {
                                 Object.entries(config.userInfoStrings).map(([key, value]) => {
