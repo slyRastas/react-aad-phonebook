@@ -59,8 +59,8 @@ class AllOfficeView extends Component {
                     {this.state.offices.map(
                         function(office){
                             return(
-                                <Grid item xs={12} sm={12} md={6} lg={4} key={office.linkTitle}>
-                                    <OfficeCard office={office} />
+                                <Grid item xs={12} sm={12} md={6} lg={4} key={office.id}>
+                                    <OfficeCard office={office} key={office.linkTitle}/>
                                 </Grid>
                             )
                         }
