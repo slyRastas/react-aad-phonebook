@@ -149,6 +149,17 @@ class ApplicationBar extends Component {
         this.handleClose();
     }
 
+    renderTitle(pathname) {
+        switch(pathname) {
+            case "/people":
+                return "People"
+            case "/offices":
+                return "Offices"
+            default:
+                return "Home"
+        }
+    }
+
     render() {
         const { classes } = this.props;
         const open = Boolean(this.state.anchorEl);
@@ -173,7 +184,7 @@ class ApplicationBar extends Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap className={classes.title}>
-                            {(this.props.location.pathname === "/people") ? "People" : "Home"}
+                            { this.renderTitle(this.props.location.pathname) }
                         </Typography>
                         { this.props.isAuthenticated && (
                             <div>
