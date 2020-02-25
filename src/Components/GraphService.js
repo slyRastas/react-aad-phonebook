@@ -47,10 +47,10 @@ export async function getContactDetail(accessToken, contactId) {
     return contactDetail
 }
 
-export async function getSharepointListItem(accessToken) {
+export async function getSharepointListItems(accessToken, sharepointListID) {
     const client = getAuthenticatedClient(accessToken);
 
-    const apiString = '/sites/root/lists/' + config.officesSharepointListID + '/items';
+    const apiString = '/sites/root/lists/' + sharepointListID + '/items';
 
     const officesInfo = await client
         .api(apiString)

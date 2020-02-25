@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import config from '../../Config';
-import { getSharepointListItem } from '../GraphService';
+import { getSharepointListItems } from '../GraphService';
 import Grid from '@material-ui/core/Grid'
 import OfficeCard from './OfficeCard'
 
@@ -39,7 +39,7 @@ class AllOfficeView extends Component {
             var accessToken = await window.msal.acquireTokenSilent({
                 scopes: config.scopes
             });
-            var offices = await getSharepointListItem(accessToken);
+            var offices = await getSharepointListItems(accessToken, config.officesSharepointListID);
             var officesInfo = offices.value.map(x => x.fields)
             //Update the array of contacts in state
             this.setState({
