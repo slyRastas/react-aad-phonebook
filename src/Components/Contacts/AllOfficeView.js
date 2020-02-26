@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import config from '../../Config';
 import { getSharepointListItems } from '../GraphService';
-import Grid from '@material-ui/core/Grid'
-import OfficeCard from './OfficeCard'
+import Grid from '@material-ui/core/Grid';
+import OfficeCard from './OfficeCard';
 
 const useStyles = theme => ({
     formControl: {
