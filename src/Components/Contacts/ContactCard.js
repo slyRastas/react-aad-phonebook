@@ -49,7 +49,7 @@ class ContactCard extends Component {
             var accessToken = await window.msal.acquireTokenSilent({
                 scopes: config.scopes
             });
-            var userDetail = await getContactDetail(accessToken, this.props.contact.id);
+            var userDetail = await getContactDetail(accessToken, this.props.contact.userPrincipalName);
             //Update the array of contacts in state
             this.setState({
                 userDetail: userDetail,

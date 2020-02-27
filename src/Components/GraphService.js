@@ -34,10 +34,10 @@ export async function getContactsInfo(accessToken) {
     return contactsInfo;
 }
 
-export async function getContactDetail(accessToken, contactId) {
+export async function getContactDetail(accessToken, userPrincipalName) {
     const client = getAuthenticatedClient(accessToken);
 
-    const apiString = '/users/' + contactId;
+    const apiString = '/users/' + userPrincipalName;
 
     const contactDetail = await client
         .api(apiString)
@@ -58,4 +58,19 @@ export async function getSharepointListItems(accessToken, sharepointListID) {
         .get()
 
     return officesInfo
+}
+
+export async function lookupSharepointUser(accessToken, sharepointUserListID, lookupID){
+    console.log(typeof lookupID);
+    var listItems = await getSharepointListItems(accessToken, sharepointUserListID);
+    
+    var listItemFields = listItems.value.map(x => x.fields)
+    console.log(listItemFields)
+    
+
+    var index = listItemFields.filter(item => item.id === lookupID);
+    console.log(index);
+    //return listItems[index];
+    return index[0];
+
 }
