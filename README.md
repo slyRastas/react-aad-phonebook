@@ -1,3 +1,7 @@
+This is a react spa that leverages Azure Active Directory for authentication and Contact Information<br />
+and Microsoft Sharepoint Online for Office and Branch Location and Contact Information.<br/>
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
