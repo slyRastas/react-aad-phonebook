@@ -66,7 +66,6 @@ class OfficeCard extends Component {
             scopes: config.scopes
         });
         var siteContact = await lookupSharepointUser(accessToken, config.sharepointUserListID, this.props.office.Site_x0020_ContactLookupId);
-        console.log("looking for id of " + this.props.office.Site_x0020_ContactLookupId)
         var contact = await getContactDetail(accessToken, siteContact.EMail);
         //Update the array of contacts in state
         this.setState({
