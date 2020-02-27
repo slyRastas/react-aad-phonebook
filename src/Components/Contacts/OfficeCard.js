@@ -19,6 +19,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Divider from '@material-ui/core/Divider';
+import { lookupSharepointUser, getContactDetail } from '../GraphService';
+import ContactCard from './ContactCard';
 
 const classes = theme => ({
     expand: {
@@ -34,23 +36,65 @@ const classes = theme => ({
     avatar: {
       backgroundColor: blue[500],
     },
+    content: {
+      flexGrow: 1,
+    },
+    cards: {
+      padding: theme.spacing(2),
+    }
   });
 
 function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
+
+
 class OfficeCard extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      contact: [],
+    }
+  }
+
+  async componentDidMount() {
+    try {
+        //Get user access token.
+        var accessToken = await window.msal.acquireTokenSilent({
+            scopes: config.scopes
+        });
+        var siteContact = await lookupSharepointUser(accessToken, config.sharepointUserListID, this.props.office.Site_x0020_ContactLookupId);
+        console.log("looking for id of " + this.props.office.Site_x0020_ContactLookupId)
+        var contact = await getContactDetail(accessToken, siteContact.EMail);
+        //Update the array of contacts in state
+        this.setState({
+            contact: contact,
+        });
+    }
+    catch(err) {
+        //this.props.showError('ERROR', JSON.stringify(err));
+        console.log(JSON.stringify(err))
+    }
+
+    
+}
+
+  
+
     render() {
+      const { classes } = this.props;
         return (
             <div>
                 <Card>
                     <CardHeader 
                         avatar={<Business/>} 
                         title={this.props.office.Title}
-                        subheader={this.props.office.EMail}/>
+                        subheader={this.props.office.Functions.join(' | ')}
+                        />
                     <Divider/>
-                    <CardContent>
+                    <CardContent className={classes.cards}>
                       <List>
                         <ListItemLink href={"tel:" + this.props.office.WorkPhone}>
                           <ListItemAvatar>
@@ -73,7 +117,12 @@ class OfficeCard extends Component {
                             </ListItemLink>
                           </div>
                         )}
+                        <ListItem className={classes.content}>
+                          
+                        </ListItem>
+                        {(this.state.contact !== []) && (<ContactCard contact={this.state.contact} key={this.props.office.id} className={classes.content}/>)}
                       </List>
+                      
                     </CardContent>
                 </Card>
             </div>
