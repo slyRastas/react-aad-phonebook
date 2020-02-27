@@ -61,16 +61,11 @@ export async function getSharepointListItems(accessToken, sharepointListID) {
 }
 
 export async function lookupSharepointUser(accessToken, sharepointUserListID, lookupID){
-    console.log(typeof lookupID);
     var listItems = await getSharepointListItems(accessToken, sharepointUserListID);
     
     var listItemFields = listItems.value.map(x => x.fields)
-    console.log(listItemFields)
-    
 
     var index = listItemFields.filter(item => item.id === lookupID);
-    console.log(index);
-    //return listItems[index];
     return index[0];
 
 }
