@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { Container } from 'reactstrap'
-import NavigationBar from './Components/NavBar'
+//import { Container } from 'reactstrap'
+import { Container } from '@material-ui/core'
 import Welcome from './Components/Welcome'
 import ErrorMessage from './Components/ErrorMessage'
 import AllContactsView from './Components/Contacts/AllContactsView'
@@ -9,8 +9,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 import config from './Config';
 import { UserAgentApplication } from 'msal';
 import { getUserDetails } from './Components/GraphService'
+import withMediaQuery from './Components/HOC/withMediaQuery'
+import ApplicationBar from './Components/ApplicationBar'
+import { createBrowserHistory } from 'history'
+import AllOfficeView from './Components/Contacts/AllOfficeView'
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -28,10 +32,13 @@ export default class App extends Component {
 
     var user = this.userAgentApplication.getAccount();
 
+    var history = createBrowserHistory();
+
     this.state = {
       isAuthenticated: false,
       user: {},
-      error: null
+      error: null,
+      history: history,
     };
 
     if (user) {
@@ -39,8 +46,6 @@ export default class App extends Component {
       this.getUserProfile()
     }
   }
-
-
 
   async login() {
     try {
@@ -51,7 +56,6 @@ export default class App extends Component {
         }
       );
       await this.getUserProfile();
-
     }
     catch(err) {
       var error = {};
@@ -96,6 +100,7 @@ export default class App extends Component {
             displayName: user.displayName,
             email: user.mail || user.userPrincipalName
           },
+          error: null,
           //error: {message:"Access Token", debug: accessToken.accessToken}
         });
       }
@@ -130,34 +135,40 @@ export default class App extends Component {
   render() {
     let error = null;
     if (this.state.error) {
-      error = <ErrorMessage message={this.state.error.message} debug={this.state.error.debug} />;
+      error = <ErrorMessage message={this.state.error.message} debug={this.state.error.debug} />
     }
 
     return (
-      <Router>
-        <div>
-          <NavigationBar
-            isAuthenticated={this.state.isAuthenticated}
-            authButtonMethod={this.state.isAuthenticated ? this.logout.bind(this) : this.login.bind(this)}
-            user={this.state.user} />
-          <Container>
-            {error}
-            <Route exact path="/"
-              render={(props) => 
-                <Welcome {...props}
-                  isAuthenticated={this.state.isAuthenticated}
-                  user={this.state.user}
-                  authButtonMethod={this.login.bind(this)} />
-                } />
-              <Route exact path="/phonebook"
+        <Router>
+          <div>
+            <ApplicationBar
+              isAuthenticated={this.state.isAuthenticated}
+              authButtonMethod={this.state.isAuthenticated ? this.logout.bind(this) : this.login.bind(this)}
+              user={this.state.user} />
+            <Container>
+              {error}
+              <Route exact path="/"
                 render={(props) => 
-                  <AllContactsView {...props}
-                    showError={this.setErrorMessage.bind(this)}
-                    user={this.state.user} />
+                  <Welcome {...props}
+                    isAuthenticated={this.state.isAuthenticated}
+                    user={this.state.user}
+                    authButtonMethod={this.login.bind(this)} />
+                  } />
+                <Route exact path="/people"
+                  render={(props) => 
+                    <AllContactsView {...props}
+                      showError={this.setErrorMessage.bind(this)}
+                      user={this.state.user} />
+                      } />
+                <Route exact path="/offices"
+                  render={(props) =>
+                    <AllOfficeView {...props}
+                      showError={this.setErrorMessage.bind(this)}
+                      user={this.state.user} />
                     } />
-          </Container>
-        </div>
-      </Router>
+            </Container>
+          </div>
+        </Router>
     );
   }
   setErrorMessage(message, debug) {
@@ -165,5 +176,6 @@ export default class App extends Component {
       error: {message: message, debug: debug}
     });
   }
-
 }
+
+export default withMediaQuery('(prefers-colour-scheme: dark)')(App);

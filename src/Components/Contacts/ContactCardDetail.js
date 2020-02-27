@@ -17,46 +17,59 @@ const useStyles = theme => ({
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    display: 'flex',
-    '& > *': {
-      margin: theme.spacing(1),
-      width: theme.spacing(16),
-      height: theme.spacing(16),
-    },
   },
 });
+
+function checkArray(prop) {
+    if (prop !== undefined && prop.length > 0) {
+        return true;
+    }
+    else {return false};
+}
+
+function ListItemLink(props) {
+    return <ListItem button component="a" {...props} />;
+}
 
 class ContactCardDetail extends Component { 
     render() {
         const { classes } = this.props;
         return (
             <List className={classes.root}>
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar>
-                            <PhoneAndroid />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Mobile Phone" secondary={this.props.contact.mobilePhone} />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar>
-                            <Work />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Work Phone" secondary={this.props.contact.businessPhones} />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-                <ListItem>
+                { (this.props.contact.mobilePhone !== null) && (
+                    <div>
+                        <ListItemLink href={"tel:" + this.props.contact.mobilePhone}>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <PhoneAndroid />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Mobile Phone" secondary={this.props.contact.mobilePhone} />
+                        </ListItemLink>
+                        <Divider variant="inset" component="li" />
+                    </div>
+                )}
+                { (checkArray(this.props.contact.businessPhones)) && (
+                    <div>
+                        <ListItemLink href={"tel:" + this.props.contact.businessPhones}>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <Work />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Work Phone" secondary={this.props.contact.businessPhones} />
+                        </ListItemLink>
+                        <Divider variant="inset" component="li" />
+                    </div>
+                )}
+                <ListItemLink href={"mailto:" + this.props.contact.userPrincipalName}>
                     <ListItemAvatar>
                         <Avatar>
                             <Email />
                         </Avatar>
                     </ListItemAvatar>
                     <ListItemText primary={this.props.contact.userPrincipalName} />
-                </ListItem>
+                </ListItemLink>
                 <Divider variant="inset" component="li" />
                 <ListItem>
                     <ListItemAvatar>

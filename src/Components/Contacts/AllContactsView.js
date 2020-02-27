@@ -5,20 +5,27 @@ import config from '../../Config'
 import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
-import { Jumbotron } from 'reactstrap';
-import { Select, FormControl, MenuItem, InputLabel } from '@material-ui/core';
+import { Select, FormControl, MenuItem, InputLabel, Card } from '@material-ui/core';
 
 
 var sortJsonArray = require('sort-json-array')
 
 const useStyles = theme => ({
     formControl: {
-      margin: theme.spacing(1),
+      margin: theme.spacing(4),
       minWidth: '100px',
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        [theme.breakpoints.down('sm')]: {
+            paddingLeft: theme.spacing(8)
+        }
+        //marginLeft: theme.drawerWidth + 1,
+      },
   });
 
 class AllContactsView extends Component {
@@ -68,33 +75,34 @@ class AllContactsView extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <div>
-            <Jumbotron>
-                <FormControl className={classes.formControl}>
-                    <InputLabel id="sort-by-label">Sort By</InputLabel>
-                    <Select
-                        className={useStyles}
-                        labelId="sort-by-label"
-                        id="sort-by-select"
-                        value={ Object.entries(config.userInfoStrings)[this.state.sort]  }
-                        onChange={this.sortContacts}
+            <div className={classes.content}>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Card>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel id="sort-by-label">Sort By</InputLabel>
+                        <Select
+                            className={classes.selectEmpty}
+                            labelId="sort-by-label"
+                            id="sort-by-select"
+                            value={ this.state.sort  }
+                            onChange={ this.sortContacts }
                         >
                             {
-                            Object.entries(config.userInfoStrings).map(([key, value]) => {
-                                return(
-                                    <MenuItem value={key} key={key}>{value}</MenuItem>
-                                )
-                            }) 
+                                Object.entries(config.userInfoStrings).map(([key, value]) => {
+                                    return(
+                                        <MenuItem value={key} key={key}>{value}</MenuItem>
+                                    )
+                                }) 
                             }
-
                         </Select>
-                </FormControl>
-            </Jumbotron>
-            <Grid container spacing={3}>
+                    </FormControl>
+                    </Card>
+                </Grid>
                 {this.state.contacts.map(
                     function(contact){
                         return(
-                            <Grid item sm={12} md={6} lg={4} key={contact.id}>
+                            <Grid item xs={12} sm={12} md={6} lg={4} key={contact.id}>
                                 <ContactCard contact={contact} key={contact.id}/>
                             </Grid>
                         );
