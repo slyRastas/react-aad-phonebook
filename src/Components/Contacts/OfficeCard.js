@@ -12,7 +12,7 @@ import config from '../../Config';
 import { 
   Business,
   Work,
-  Email,
+  Phone,
   Print, } from '@material-ui/icons'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -21,6 +21,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Divider from '@material-ui/core/Divider';
 import { lookupSharepointUser, getContactDetail } from '../GraphService';
 import ContactCard from './ContactCard';
+import FormattedAddress from './FormattedAddress'
 
 const classes = theme => ({
     expand: {
@@ -56,6 +57,7 @@ class OfficeCard extends Component {
 
     this.state = {
       contact: [],
+      address: {},
     }
   }
 
@@ -70,6 +72,12 @@ class OfficeCard extends Component {
         //Update the array of contacts in state
         this.setState({
             contact: contact,
+            address: {
+              streetAddress: this.props.office.Location,
+              city: this.props.office.WorkCity,
+              state: this.props.office.WorkState,
+              postalCode: this.props.office.WorkZip,
+            }
         });
     }
     catch(err) {
@@ -116,10 +124,28 @@ class OfficeCard extends Component {
                             </ListItemLink>
                           </div>
                         )}
-                        <ListItem className={classes.content}>
-                          
+                        <Divider variant="inset" component="li"/>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar>
+                              <Business />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText primary="Street Address" secondary={<FormattedAddress address={this.state.address}/>} component={'span'}/>
                         </ListItem>
-                        {(this.state.contact !== []) && (<ContactCard contact={this.state.contact} key={this.props.office.id} className={classes.content}/>)}
+                        <Divider variant="inset" component="li"/>
+                        <ListItem className={classes.content}>
+                        <ListItemAvatar>
+                            <Avatar>
+                              <Phone />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText primary="Site Contact" secondary={
+                            (this.state.contact !== []) && (
+                            <ContactCard contact={this.state.contact} key={this.props.office.id} className={classes.content}/>
+                            )} component={'span'} />
+                        </ListItem>
+                        
                       </List>
                       
                     </CardContent>
