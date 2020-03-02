@@ -5,22 +5,22 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent'
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import { blue } from '@material-ui/core/colors';
-import MoreIcon from '@material-ui/icons/More';
 import config from '../../Config';
 import { 
   Business,
   Work,
-  Email,
-  Print, } from '@material-ui/icons'
+  Print,
+  EmojiPeople } from '@material-ui/icons'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Divider from '@material-ui/core/Divider';
 import { lookupSharepointUser, getContactDetail } from '../GraphService';
-import ContactCard from './ContactCard';
+import FormattedAddress from './FormattedAddress'
+import ContactDialogDetail from './ContactDialogDetail'
 
 const classes = theme => ({
     expand: {
@@ -56,7 +56,22 @@ class OfficeCard extends Component {
 
     this.state = {
       contact: [],
+      address: {},
+      isOpen: false,
     }
+    this.toggleDialog = this.toggleDialog.bind(this);
+  }
+
+  toggle() {
+    this.setState({
+        isExpanded: !this.state.isExpanded,
+    });
+  }
+
+  toggleDialog() {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
   }
 
   async componentDidMount() {
@@ -70,6 +85,12 @@ class OfficeCard extends Component {
         //Update the array of contacts in state
         this.setState({
             contact: contact,
+            address: {
+              streetAddress: this.props.office.Location,
+              city: this.props.office.WorkCity,
+              state: this.props.office.WorkState,
+              postalCode: this.props.office.WorkZip,
+            }
         });
     }
     catch(err) {
@@ -80,8 +101,6 @@ class OfficeCard extends Component {
     
 }
 
-  
-
     render() {
       const { classes } = this.props;
         return (
@@ -91,7 +110,22 @@ class OfficeCard extends Component {
                         avatar={<Business/>} 
                         title={this.props.office.Title}
                         subheader={this.props.office.Functions.join(' | ')}
+                        action={
+                          <Button
+                              className={clsx(classes.expand, {
+                                  [classes.expandOpen]: this.state.isOpen,
+                              })}
+                              onClick={this.toggleDialog}
+                              aria-expanded={this.state.isOpen}
+                              aria-label="show more"
+                              >
+                                  <Avatar>
+                                    <EmojiPeople/>
+                                  </Avatar>
+                              </Button>
+                        }
                         />
+                    <ContactDialogDetail contact={this.state.contact} userDetail={this.state.contact} isOpen={this.state.isOpen} toggleDialog={this.toggleDialog}/>
                     <Divider/>
                     <CardContent className={classes.cards}>
                       <List>
@@ -116,12 +150,16 @@ class OfficeCard extends Component {
                             </ListItemLink>
                           </div>
                         )}
-                        <ListItem className={classes.content}>
-                          
-                        </ListItem>
-                        {(this.state.contact !== []) && (<ContactCard contact={this.state.contact} key={this.props.office.id} className={classes.content}/>)}
+                        <Divider variant="inset" component="li"/>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar>
+                              <Business />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText primary="Street Address" secondary={<FormattedAddress address={this.state.address}/>} component={'span'}/>
+                        </ListItem>                       
                       </List>
-                      
                     </CardContent>
                 </Card>
             </div>

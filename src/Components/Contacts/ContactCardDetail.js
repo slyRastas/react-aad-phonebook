@@ -77,7 +77,7 @@ class ContactCardDetail extends Component {
                             <Business />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={this.props.contact.department} secondary={<FormattedAddress contact={this.props.contact}/>} component={'span'}/>
+                    <ListItemText primary={this.props.contact.department} secondary={<FormattedAddress address={this.props.contact}/>} component={'span'}/>
                 </ListItem>
             </List>
         )

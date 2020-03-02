@@ -35,7 +35,7 @@ function WelcomeContent(props) {
     }
 
     //Not Authenticated, ask user to sign in and provide a link
-    return <Button color="primary" onClick={props.authButtonMethod}>Click here to sign in</Button>
+    return <Button onClick={props.authButtonMethod}>Click here to sign in</Button>
 }
 
 class Welcome extends Component {

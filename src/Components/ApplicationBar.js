@@ -81,7 +81,7 @@ const classes = theme => ({
         }),
         overflowX: 'hidden',
         width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('xs')]: {
             width: theme.spacing(9) + 1,
         },
     },
@@ -94,9 +94,9 @@ const classes = theme => ({
     },
     listitem: {
         padding: '24px',
-        [theme.breakpoints.down('sm')]: {
-            padding: '16px',
-        },
+        //[theme.breakpoints.down('sm')]: {
+        //    padding: '16px',
+        //},
     }
 });
 
