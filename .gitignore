@@ -24,3 +24,6 @@ yarn-error.log*
 src/Config.js
 src/Media/Phonebook_Long.png
 src/Media/Leaf_TextBelow.png
+workers-site/*
+wrangler.toml
+dist/*
