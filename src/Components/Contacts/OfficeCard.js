@@ -138,7 +138,7 @@ class OfficeCard extends Component {
                           <ListItemText primary="Main Office Number" secondary={this.props.office.WorkPhone} />
                         </ListItemLink>
                         <Divider variant="inset" component="li"/>
-                        {(this.props.office.WorkFax !== "") && (
+                        {(this.props.office.WorkFax) && (
                           <div>
                             <ListItemLink href={"tel:" + this.props.office.WorkFax}>
                               <ListItemAvatar>

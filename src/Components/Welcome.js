@@ -39,6 +39,14 @@ function WelcomeContent(props) {
 }
 
 class Welcome extends Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            departments: [],
+            
+        }
+    }
     render() {
         const { classes } = this.props;
         return (
