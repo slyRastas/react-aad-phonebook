@@ -56,8 +56,14 @@ class OfficeCard extends Component {
 
     this.state = {
       contact: [],
-      address: {},
+      address: {
+        streetAddress: "",
+        city: "",
+        state: "",
+        postalCode: "",
+      },
       isOpen: false,
+      loading: false,
     }
     this.toggleDialog = this.toggleDialog.bind(this);
   }
@@ -75,6 +81,9 @@ class OfficeCard extends Component {
   }
 
   async componentDidMount() {
+    this.setState({
+      loading: true,
+    })
     try {
         //Get user access token.
         var accessToken = await window.msal.acquireTokenSilent({
@@ -90,7 +99,8 @@ class OfficeCard extends Component {
               city: this.props.office.WorkCity,
               state: this.props.office.WorkState,
               postalCode: this.props.office.WorkZip,
-            }
+            },
+            loading: false
         });
     }
     catch(err) {
@@ -125,7 +135,7 @@ class OfficeCard extends Component {
                               </Button>
                         }
                         />
-                    <ContactDialogDetail contact={this.state.contact} userDetail={this.state.contact} isOpen={this.state.isOpen} toggleDialog={this.toggleDialog}/>
+                    {(!this.state.loading) && (<ContactDialogDetail contact={this.state.contact} userDetail={this.state.contact} isOpen={this.state.isOpen} toggleDialog={this.toggleDialog}/>)}
                     <Divider/>
                     <CardContent className={classes.cards}>
                       <List>

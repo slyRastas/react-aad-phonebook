@@ -48,7 +48,9 @@ const classes = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        background: 'linear-gradient(45deg, #00A5D8 30%, #6D6E71 90%)',
+        background: (theme.palette.type === 'dark') 
+            ? 'linear-gradient(45deg, #6D6E71 30%, #00A5D8 90%)'
+            : 'linear-gradient(45deg, #00A5D8 30%, #6D6E71 90%)',
     },
     appBarShift: {
         marginLeft: drawerWidth,

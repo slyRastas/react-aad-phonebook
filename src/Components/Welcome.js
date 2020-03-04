@@ -2,9 +2,15 @@ import React, { Component } from 'react'
 import{
     Button,
     Paper,
+    Grid,
+    Card,
+    CardHeader,
+    CircularProgress,
 } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import Phonebook_Long from '../Media/Phonebook_Long.png'
+import { getSharepointListItems } from './GraphService';
+import config from '../Config'
 
 const classes = theme => ({
     content: {
@@ -17,11 +23,33 @@ const classes = theme => ({
     },
     img: {
         height: '64px',
+        marginBottom: theme.spacing(3),
         [theme.breakpoints.down('sm')]: {
             height: '24px'
         }
     }
   });
+
+function CompanyInfo(props) {
+    if (props.isAuthenticated) {
+        if (props.loading) {
+            return <CircularProgress />
+        }
+        return (
+            <div>
+                <Grid container sapcing={3}>
+                    <Grid item xs={12} sm={12} md={6} lg={4} >
+                        <Card>
+                            <CardHeader title="test" />
+                        </Card>
+                    </Grid>
+                </Grid>
+            </div>
+        );
+    }
+
+    return <div></div>
+}
 
 function WelcomeContent(props) {
     //If Authenticated, greet user
@@ -43,10 +71,39 @@ class Welcome extends Component {
         super(props);
 
         this.state = {
-            departments: [],
+            departmentInfo: [],
+            loading: false,
             
         }
     }
+
+    async fetchDepartemntInfo() {
+        try {
+            var accessToken = await window.msal.acquireTokenSilent({
+                scopes: config.scopes
+            });
+
+            var departmentInfo = await getSharepointListItems(accessToken, config.sharepointDepartmentListID)
+            
+            this.setState({
+                departmentInfo: departmentInfo,
+                loading: false,
+            })
+        }
+        catch(err) {
+            console.log(JSON.stringify(err))
+        }
+    }
+
+    componentDidMount() {
+        console.log("Component Mounted")
+        this.setState({
+            loading: true,
+        })
+        console.log("Fetching Department Info")
+        this.fetchDepartemntInfo();
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -59,6 +116,9 @@ class Welcome extends Component {
                     isAuthenticated={this.props.isAuthenticated}
                     user={this.props.user}
                     authButtonMethod={this.props.authButtonMethod} />
+                <CompanyInfo
+                    isAuthenticated={this.props.isAuthenticated}
+                    loading={this.state.loading} />
             </Paper>
         );
     }
