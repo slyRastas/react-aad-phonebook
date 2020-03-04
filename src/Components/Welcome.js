@@ -32,10 +32,10 @@ const classes = theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
-        [theme.breakpoints.down('sm')]: {
+        //[theme.breakpoints.down('sm')]: {
             //paddingLeft: theme.spacing(8),
-            marginLeft: theme.spacing(8),
-        }
+        //    marginLeft: theme.spacing(8),
+        //}
     },
     img: {
         height: '64px',

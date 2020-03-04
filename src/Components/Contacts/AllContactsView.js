@@ -21,9 +21,9 @@ const useStyles = theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
-        [theme.breakpoints.down('sm')]: {
-            paddingLeft: theme.spacing(8)
-        }
+        //[theme.breakpoints.down('sm')]: {
+        //    paddingLeft: theme.spacing(8)
+        //}
         //marginLeft: theme.drawerWidth + 1,
       },
     loading: {

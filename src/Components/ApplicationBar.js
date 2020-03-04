@@ -68,6 +68,9 @@ const classes = theme => ({
         flexShrink: 0,
         whiteSpace: 'nowrap',
         zIndex: 1000,
+        [theme.breakpoints.down('md')]: {
+            width: '1px',
+        }
     },
     drawerOpen: {
         width: drawerWidth,
@@ -83,6 +86,10 @@ const classes = theme => ({
         }),
         overflowX: 'hidden',
         width: theme.spacing(7) + 1,
+        [theme.breakpoints.down('sm')]: {
+            width: '0px',
+            display: 'none',
+        },
         [theme.breakpoints.up('xs')]: {
             width: theme.spacing(9) + 1,
         },
@@ -122,6 +129,7 @@ class ApplicationBar extends Component {
         }
 
         this.handleDrawerAction = this.handleDrawerAction.bind(this);
+        this.handleDrawerClose = this.handleDrawerClose.bind(this);
 
         this.handleClick = this.handleClick.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -131,6 +139,12 @@ class ApplicationBar extends Component {
     handleDrawerAction() {
         this.setState({
             drawerOpen: !this.state.drawerOpen,
+        })
+    }
+
+    handleDrawerClose() {
+        this.setState({
+            drawerOpen: false,
         })
     }
 
@@ -246,7 +260,7 @@ class ApplicationBar extends Component {
                         </div>
                         <Divider />
                         <List>
-                            <ListItem button className={classes.listitem} key={"home"} component={RouterNavLink} to="/">
+                            <ListItem button className={classes.listitem} key={"home"} onClick={this.handleDrawerClose} component={RouterNavLink} to="/">
                                 <ListItemIcon >
                                     <Home />
                                 </ListItemIcon>
@@ -254,13 +268,13 @@ class ApplicationBar extends Component {
                             </ListItem>
                             { this.props.isAuthenticated && (
                                 <div>
-                                <ListItem button className={classes.listitem} key={"People"} component={RouterNavLink} to="/people">
+                                <ListItem button className={classes.listitem} key={"People"} onClick={this.handleDrawerClose } component={RouterNavLink} to="/people">
                                     <ListItemIcon >
                                         <Contacts/>
                                     </ListItemIcon>
                                     <ListItemText primary="People" />
                                 </ListItem>
-                                <ListItem button className={classes.listitem} key={"Offices"} component={RouterNavLink} to="/offices">
+                                <ListItem button className={classes.listitem} key={"Offices"} onClick={this.handleDrawerClose} component={RouterNavLink} to="/offices">
                                     <ListItemIcon>
                                         <Business />
                                     </ListItemIcon>
