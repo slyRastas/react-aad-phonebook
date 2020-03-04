@@ -5,7 +5,7 @@ import config from '../../Config'
 import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
-import { Select, FormControl, MenuItem, InputLabel, Card } from '@material-ui/core';
+import { Select, FormControl, MenuItem, InputLabel, Card, CircularProgress } from '@material-ui/core';
 
 
 var sortJsonArray = require('sort-json-array')
@@ -26,6 +26,10 @@ const useStyles = theme => ({
         }
         //marginLeft: theme.drawerWidth + 1,
       },
+    loading: {
+        //textAlign: 'center'
+        marginTop: theme.spacing(4)
+    }
   });
 
 class AllContactsView extends Component {
@@ -37,13 +41,17 @@ class AllContactsView extends Component {
         this.state = {
             contacts: [],
             sort: 'displayName',
-            userInfo: userInfo
+            userInfo: userInfo,
+            loading: false,
         };
 
         this.sortContacts = this.sortContacts.bind(this)
     }
 
     async componentDidMount() {
+        this.setState({
+            loading: true,
+        })
         try {
             //Get user access token.
             var accessToken = await window.msal.acquireTokenSilent({
@@ -53,7 +61,8 @@ class AllContactsView extends Component {
             var sortedContacts = sortJsonArray(contacts.value, this.state.sort)
             //Update the array of contacts in state
             this.setState({
-                contacts: sortedContacts
+                contacts: sortedContacts,
+                loading: false,
             });
         }
         catch(err) {
@@ -99,15 +108,18 @@ class AllContactsView extends Component {
                     </FormControl>
                     </Card>
                 </Grid>
-                {this.state.contacts.map(
-                    function(contact){
-                        return(
-                            <Grid item xs={12} sm={12} md={6} lg={4} key={contact.id}>
-                                <ContactCard contact={contact} key={contact.id}/>
-                            </Grid>
-                        );
-                    }
-                )}
+                { (this.state.loading) ? 
+                    <Grid container justify="center" className={classes.loading}><CircularProgress/></Grid> :
+                    this.state.contacts.map(
+                        function(contact){
+                            return(
+                                <Grid item xs={12} sm={12} md={6} lg={4} key={contact.id}>
+                                    <ContactCard contact={contact} key={contact.id}/>
+                                </Grid>
+                            );
+                        }
+                    )
+                }
             </Grid>
             </div>
         );

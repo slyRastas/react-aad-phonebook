@@ -4,6 +4,7 @@ import config from '../../Config';
 import { getSharepointListItems } from '../GraphService';
 import Grid from '@material-ui/core/Grid';
 import OfficeCard from './OfficeCard';
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = theme => ({
     formControl: {
@@ -28,22 +29,26 @@ class AllOfficeView extends Component {
         super(props);
 
         this.state = {
-            loading: true,
+            loading: false,
             offices: [],
         }
     }
 
     async componentDidMount() {
+        this.setState({
+            loading: true,
+        })
         try {
             //Get user access token.
             var accessToken = await window.msal.acquireTokenSilent({
                 scopes: config.scopes
             });
             var offices = await getSharepointListItems(accessToken, config.officesSharepointListID);
-            var officesInfo = offices.value.map(x => x.fields)
+            //var officesInfo = offices.value.map(x => x.fields)
             //Update the array of contacts in state
             this.setState({
-                offices: officesInfo
+                offices: offices,
+                loading: false,
             });
         }
         catch(err) {
@@ -56,7 +61,9 @@ class AllOfficeView extends Component {
         return (
             <div className={classes.content}>
                 <Grid container spacing={3}>
-                    {this.state.offices.map(
+                    { (this.state.loading) ?
+                     <Grid container justify="center"><CircularProgress/></Grid> :
+                    this.state.offices.map(
                         function(office){
                             return(
                                 <Grid item xs={12} sm={12} md={6} lg={4} key={office.id}>
