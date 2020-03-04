@@ -52,20 +52,19 @@ export async function getSharepointListItems(accessToken, sharepointListID) {
 
     const apiString = '/sites/root/lists/' + sharepointListID + '/items';
 
-    const officesInfo = await client
+    const offices = await client
         .api(apiString)
         .expand("fields")
         .get()
 
+    var officesInfo = offices.value.map(x => x.fields)
     return officesInfo
 }
 
 export async function lookupSharepointUser(accessToken, sharepointUserListID, lookupID){
     var listItems = await getSharepointListItems(accessToken, sharepointUserListID);
-    
-    var listItemFields = listItems.value.map(x => x.fields)
 
-    var index = listItemFields.filter(item => item.id === lookupID);
+    var index = listItems.filter(item => item.id === lookupID);
     return index[0];
 
 }

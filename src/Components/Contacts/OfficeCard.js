@@ -41,6 +41,9 @@ const classes = theme => ({
     },
     cards: {
       padding: theme.spacing(2),
+    },
+    loading: {
+      marginTop: theme.spacing(2),
     }
   });
 
@@ -57,10 +60,10 @@ class OfficeCard extends Component {
     this.state = {
       contact: [],
       address: {
-        streetAddress: "",
-        city: "",
-        state: "",
-        postalCode: "",
+        streetAddress: this.props.office.Location,
+        city: this.props.office.WorkCity,
+        state: this.props.office.WorkState,
+        postalCode: this.props.office.WorkZip,
       },
       isOpen: false,
       loading: false,
@@ -94,12 +97,6 @@ class OfficeCard extends Component {
         //Update the array of contacts in state
         this.setState({
             contact: contact,
-            address: {
-              streetAddress: this.props.office.Location,
-              city: this.props.office.WorkCity,
-              state: this.props.office.WorkState,
-              postalCode: this.props.office.WorkZip,
-            },
             loading: false
         });
     }
@@ -128,7 +125,7 @@ class OfficeCard extends Component {
                               onClick={this.toggleDialog}
                               aria-expanded={this.state.isOpen}
                               aria-label="show more"
-                              >
+                              disabled={this.state.loading}>
                                   <Avatar>
                                     <EmojiPeople/>
                                   </Avatar>
@@ -168,7 +165,7 @@ class OfficeCard extends Component {
                             </Avatar>
                           </ListItemAvatar>
                           <ListItemText primary="Street Address" secondary={<FormattedAddress address={this.state.address}/>} component={'span'}/>
-                        </ListItem>                       
+                        </ListItem>                      
                       </List>
                     </CardContent>
                 </Card>

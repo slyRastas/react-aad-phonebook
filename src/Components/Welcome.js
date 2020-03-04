@@ -73,7 +73,6 @@ class Welcome extends Component {
         this.state = {
             departmentInfo: [],
             loading: false,
-            
         }
     }
 
