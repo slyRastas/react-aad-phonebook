@@ -5,7 +5,7 @@ import config from '../../Config'
 import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
-import { Select, FormControl, MenuItem, InputLabel, Card, CardHeader, CircularProgress, Divider, Avatar } from '@material-ui/core';
+import { Select, FormControl, MenuItem, InputLabel, Card, CardHeader, CircularProgress, Avatar } from '@material-ui/core';
 import {Search} from '@material-ui/icons'
 import $ from 'jquery';
 
@@ -45,7 +45,7 @@ class AllContactsView extends Component {
 
         this.state = {
             contacts: [],
-            sort: 'displayName',
+            sort: '',
             filterBy: '',
             filter: '',
             filterOptions: [],
