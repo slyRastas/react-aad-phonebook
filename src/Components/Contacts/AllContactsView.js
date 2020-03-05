@@ -21,13 +21,8 @@ const useStyles = theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
-        //[theme.breakpoints.down('sm')]: {
-        //    paddingLeft: theme.spacing(8)
-        //}
-        //marginLeft: theme.drawerWidth + 1,
       },
     loading: {
-        //textAlign: 'center'
         marginTop: theme.spacing(4)
     }
   });
@@ -78,8 +73,6 @@ class AllContactsView extends Component {
             contacts: sortedContacts
         });
     }
-
-    filters = Object.getOwnPropertyDescriptor(config, "userInfoStrings").value
 
     render() {
         const { classes } = this.props;
