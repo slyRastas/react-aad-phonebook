@@ -231,12 +231,10 @@ class Welcome extends Component {
     }
 
     componentDidMount() {
-        console.log("Component Mounted")
         this.setState({
             loadingDepartments: true,
             loadingCompany: true
         })
-        console.log("Fetching Department Info")
         this.fetchDepartemntInfo();
         this.fetchCompanyInfo();
     }
