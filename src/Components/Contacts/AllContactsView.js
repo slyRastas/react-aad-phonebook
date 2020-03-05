@@ -6,7 +6,7 @@ import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
 import { Select, FormControl, MenuItem, InputLabel, Card, CircularProgress } from '@material-ui/core';
-
+import $ from 'jquery';
 
 var sortJsonArray = require('sort-json-array')
 
@@ -36,6 +36,8 @@ class AllContactsView extends Component {
         this.state = {
             contacts: [],
             sort: 'displayName',
+            filterBy: '',
+            filter: '',
             userInfo: userInfo,
             loading: false,
         };
@@ -74,6 +76,21 @@ class AllContactsView extends Component {
         });
     }
 
+    loadFilters = event => {
+
+    }
+
+    filterContacts = event => {
+        var filteredContacts = $.grep( this.state.contacts, function(contact) {
+            return contact.get(this.state.filterBy) === event.target.value;
+        });
+
+        this.setState({
+            filter: event.target.value,
+            contacts: filteredContacts,
+        })
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -98,6 +115,37 @@ class AllContactsView extends Component {
                                 }) 
                             }
                         </Select>
+                    </FormControl>
+                    <FormControl>
+                        <InputLabel id="filter-by-label">Filter By</InputLabel>
+                        <Select
+                            className={ classes.selectEmpty }
+                            labelId="filter-by-label"
+                            id="filter-by-select"
+                            value={ this.state.filterBy }
+                            onChange={ this.loadFilters }
+                        >
+                            {
+                                <div>
+                                    <MenuItem value={"department"} key={"department"}>Department</MenuItem>
+                                    <MenuItem value={"location"} key={"location"}>Location</MenuItem>
+                                </div>
+                            }
+                        </Select>
+                    </FormControl>
+                    <FormControl>
+                        <InputLabel id="filter-select-label">Filter</InputLabel>
+                        <Select
+                            className={ classes.selectEmpty }
+                            labelID="filter-select-label"
+                            id="filter-select"
+                            value={this.state.filter}
+                            onChange={this.filterContacts}
+                            >
+                                {
+                                    
+                                }
+                            </Select>
                     </FormControl>
                     </Card>
                 </Grid>
