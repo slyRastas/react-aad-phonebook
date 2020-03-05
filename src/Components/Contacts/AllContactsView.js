@@ -5,7 +5,7 @@ import config from '../../Config'
 import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
-import { Select, FormControl, MenuItem, InputLabel, Card, CardHeader, CircularProgress, Avatar } from '@material-ui/core';
+import { Select, FormControl, MenuItem, InputLabel, Card, CardHeader, CardContent, CircularProgress, Avatar } from '@material-ui/core';
 import {Search} from '@material-ui/icons'
 import $ from 'jquery';
 
@@ -149,6 +149,7 @@ class AllContactsView extends Component {
                                     <Search/>
                                 </Avatar>
                             }/>
+                        <CardContent>
                         <FormControl className={classes.formControl}>
                             <InputLabel id="sort-by-label">Sort By</InputLabel>
                             <Select
@@ -203,6 +204,7 @@ class AllContactsView extends Component {
                                     }
                                 </Select>
                         </FormControl>
+                        </CardContent>
                     </Card>
                 </Grid>
                 { (this.state.loading) ? 
