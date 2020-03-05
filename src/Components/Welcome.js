@@ -6,7 +6,23 @@ import{
     Card,
     CardHeader,
     CircularProgress,
+    Divider,
+    CardContent,
+    List,
+    ListItemAvatar,
+    ListItem,
+    Avatar,
+    ListItemText,
+    Typography,
 } from '@material-ui/core'
+import { 
+    Email,
+    Phone,
+    Language,
+    Work,
+    AccountBalance,
+    Info,
+ } from '@material-ui/icons'
 import { withStyles } from '@material-ui/core/styles'
 import Phonebook_Long from '../Media/Phonebook_Long.png'
 import { getSharepointListItems } from './GraphService';
@@ -16,10 +32,10 @@ const classes = theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
-        [theme.breakpoints.down('sm')]: {
+        //[theme.breakpoints.down('sm')]: {
             //paddingLeft: theme.spacing(8),
-            marginLeft: theme.spacing(8),
-        }
+        //    marginLeft: theme.spacing(8),
+        //}
     },
     img: {
         height: '64px',
@@ -27,20 +43,120 @@ const classes = theme => ({
         [theme.breakpoints.down('sm')]: {
             height: '24px'
         }
+    },
+    mainDivider: {
+        marginTop: theme.spacing(5),
+        marginBottom: theme.spacing(5),
     }
   });
+
+  function ListItemLink(props) {
+    return <ListItem button component="a" {...props} />;
+  }
 
 function CompanyInfo(props) {
     if (props.isAuthenticated) {
         if (props.loading) {
-            return <CircularProgress />
+            return <Grid container justify="center"><CircularProgress /></Grid>
         }
         return (
-            <div>
-                <Grid container sapcing={3}>
+            <div className={classes.content}>
+                <Grid container spacing={3}>
+                    {props.departmentInfo.map(
+                        function(department){
+                            return(
+                                <Grid item xs={12} sm={12} md={6} lg={4} key={department.id} >
+                                    <Card >
+                                        <CardHeader title={department.Title} />
+                                        <Divider/>
+                                        <CardContent>
+                                            <List>
+                                                <ListItemLink href={"mailto:" + department.EMail}>
+                                                    <ListItemAvatar>
+                                                        <Avatar>
+                                                            <Email/>
+                                                        </Avatar>
+                                                    </ListItemAvatar>
+                                                    <ListItemText primary={"Email Address"} secondary={department.EMail} />
+                                                </ListItemLink>
+                                                <Divider variant="inset" component="li"/>
+                                                {(department.WorkPhone) && (
+                                                <div>
+                                                    <ListItemLink href={"tel:" + department.WorkPhone}>
+                                                        <ListItemAvatar>
+                                                            <Avatar>
+                                                                <Phone/>
+                                                            </Avatar>
+                                                        </ListItemAvatar>
+                                                        <ListItemText primary="Phone Number" secondary={department.WorkPhone}/>
+                                                    </ListItemLink>
+                                                </div>
+                                                )}
+                                                {(department.WebPage) && (
+                                                    <div>
+                                                        <Divider variant="inset" component="li"/>
+                                                        <ListItemLink href={department.WebPage.Url}>
+                                                            <ListItemAvatar>
+                                                                <Avatar>
+                                                                    <Language/>
+                                                                </Avatar>
+                                                            </ListItemAvatar>
+                                                            <ListItemText primary={department.WebPage.Description} />
+                                                        </ListItemLink>
+                                                    </div>
+                                                )}
+                                            </List>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            )
+                        }
+                    )}
                     <Grid item xs={12} sm={12} md={6} lg={4} >
                         <Card>
-                            <CardHeader title="test" />
+                            <CardHeader title="Company Info" />
+                            <Divider/>
+                            <CardContent>
+                                <List>
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <Work/>
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary="ABN" secondary={props.companyInfo.ABN} />
+                                    </ListItem>
+                                    <Divider variant="inset" component="li"/>
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <AccountBalance/>
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary="Account Details" secondary={
+                                            <span>
+                                                <Typography variant="inherit" style={{display: 'block'}} component={'span'}>{"Bank: " + props.companyInfo.bankName}</Typography>
+                                                <Typography variant="inherit" style={{display: 'block'}} component={'span'}>{"BSB: " + props.companyInfo.bankBsb}</Typography>
+                                                <Typography variant="inherit" style={{display: 'block'}} component={'span'}>{"ACC: " + props.companyInfo.bankAcc}</Typography>
+                                            </span>
+                                        } />
+                                    </ListItem>
+                                    <Divider variant="inset" component="li"/>
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <Info/>
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary="Licence Details" secondary={
+                                            <span>
+                                                <Typography variant="inherit" style={{display: 'block'}} component={'span'}>{"QBCC: " + props.companyInfo.qbccLicenceNum}</Typography>
+                                                <Typography variant="inherit" style={{display: 'block'}} component={'span'}>{"NSW Fair Trading: " + props.companyInfo.nswFairTradingLicenceNum}</Typography>
+                                            </span>
+                                        } />
+                                    </ListItem>
+                                </List>
+                            </CardContent>
                         </Card>
                     </Grid>
                 </Grid>
@@ -72,7 +188,27 @@ class Welcome extends Component {
 
         this.state = {
             departmentInfo: [],
-            loading: false,
+            companyInfo: [],
+            loadingCompany: true,
+            loadingDepartments: false,
+        }
+    }
+
+    async fetchCompanyInfo() {
+        try {
+            var accessToken = await window.msal.acquireTokenSilent({
+                scopes: config.scopes
+            });
+
+            var companyInfo = await getSharepointListItems(accessToken, config.sharepointCompanyInfoListID)
+
+            this.setState({
+                companyInfo: companyInfo[0],
+                loadingCompany: false,
+            })
+        }
+        catch(err) {
+            console.log(err)
         }
     }
 
@@ -86,7 +222,7 @@ class Welcome extends Component {
             
             this.setState({
                 departmentInfo: departmentInfo,
-                loading: false,
+                loadingDepartments: false,
             })
         }
         catch(err) {
@@ -95,12 +231,12 @@ class Welcome extends Component {
     }
 
     componentDidMount() {
-        console.log("Component Mounted")
         this.setState({
-            loading: true,
+            loadingDepartments: true,
+            loadingCompany: true
         })
-        console.log("Fetching Department Info")
         this.fetchDepartemntInfo();
+        this.fetchCompanyInfo();
     }
 
     render() {
@@ -115,9 +251,12 @@ class Welcome extends Component {
                     isAuthenticated={this.props.isAuthenticated}
                     user={this.props.user}
                     authButtonMethod={this.props.authButtonMethod} />
+                <Divider className={classes.mainDivider} />
                 <CompanyInfo
                     isAuthenticated={this.props.isAuthenticated}
-                    loading={this.state.loading} />
+                    loading={(this.state.loadingCompany | this.state.loadingDepartments)}
+                    departmentInfo={this.state.departmentInfo} 
+                    companyInfo={this.state.companyInfo}/>
             </Paper>
         );
     }
