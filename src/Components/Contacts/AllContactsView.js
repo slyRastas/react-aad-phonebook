@@ -5,7 +5,7 @@ import config from '../../Config'
 import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
-import { Select, FormControl, MenuItem, InputLabel, Card, CircularProgress } from '@material-ui/core';
+import { Select, FormControl, MenuItem, InputLabel, Card, CircularProgress, Divider } from '@material-ui/core';
 import $ from 'jquery';
 
 var sortJsonArray = require('sort-json-array')
@@ -38,17 +38,23 @@ class AllContactsView extends Component {
             sort: 'displayName',
             filterBy: '',
             filter: '',
+            filterOptions: [],
             userInfo: userInfo,
             loading: false,
         };
 
         this.sortContacts = this.sortContacts.bind(this)
+        this.filterContacts = this.filterContacts.bind(this);
     }
 
     async componentDidMount() {
         this.setState({
             loading: true,
         })
+        this.getContacts();
+    }
+
+    async getContacts() {
         try {
             //Get user access token.
             var accessToken = await window.msal.acquireTokenSilent({
@@ -77,12 +83,40 @@ class AllContactsView extends Component {
     }
 
     loadFilters = event => {
-
+        if (event.target.value !== 'none') {
+            var lookup = {};
+            var items = this.state.contacts;
+            var result = [];
+            
+            for (var item, i = 0; (item = items[i++]);) {
+                var filter = item[event.target.value];
+                
+                if (!(filter in lookup)) {
+                    lookup[filter] = 1;
+                    result.push(filter);
+                }
+            }
+            
+            this.setState({
+                filterBy: event.target.value,
+                filterOptions: result,
+            })
+        }
+        else {
+            this.getContacts();
+            this.setState({
+                filterBy: 'none',
+                filter: '',
+                filterOptions: [],
+            })
+        }
+        
     }
 
     filterContacts = event => {
+        var filterBy = this.state.filterBy;
         var filteredContacts = $.grep( this.state.contacts, function(contact) {
-            return contact.get(this.state.filterBy) === event.target.value;
+            return contact[filterBy] === event.target.value;
         });
 
         this.setState({
@@ -116,7 +150,8 @@ class AllContactsView extends Component {
                             }
                         </Select>
                     </FormControl>
-                    <FormControl>
+                    <Divider orientation="vertical"  />
+                    <FormControl className={classes.formControl}>
                         <InputLabel id="filter-by-label">Filter By</InputLabel>
                         <Select
                             className={ classes.selectEmpty }
@@ -126,24 +161,29 @@ class AllContactsView extends Component {
                             onChange={ this.loadFilters }
                         >
                             {
-                                <div>
-                                    <MenuItem value={"department"} key={"department"}>Department</MenuItem>
-                                    <MenuItem value={"location"} key={"location"}>Location</MenuItem>
-                                </div>
+                                Object.entries(config.filterBy).map(([key, value]) => {
+                                    return (
+                                        <MenuItem value={key} key={key}>{value}</MenuItem>
+                                    )
+                                })
                             }
                         </Select>
                     </FormControl>
-                    <FormControl>
+                    <FormControl className={classes.formControl}>
                         <InputLabel id="filter-select-label">Filter</InputLabel>
                         <Select
                             className={ classes.selectEmpty }
-                            labelID="filter-select-label"
+                            labelId="filter-select-label"
                             id="filter-select"
                             value={this.state.filter}
                             onChange={this.filterContacts}
                             >
                                 {
-                                    
+                                    this.state.filterOptions.map((location) => {
+                                        return (
+                                            <MenuItem value={location} key={location}>{location}</MenuItem>
+                                        )
+                                    })
                                 }
                             </Select>
                     </FormControl>
