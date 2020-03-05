@@ -5,7 +5,8 @@ import config from '../../Config'
 import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
-import { Select, FormControl, MenuItem, InputLabel, Card, CircularProgress, Divider } from '@material-ui/core';
+import { Select, FormControl, MenuItem, InputLabel, Card, CardHeader, CircularProgress, Divider, Avatar } from '@material-ui/core';
+import {Search} from '@material-ui/icons'
 import $ from 'jquery';
 
 var sortJsonArray = require('sort-json-array')
@@ -24,6 +25,15 @@ const useStyles = theme => ({
       },
     loading: {
         marginTop: theme.spacing(4)
+    },
+    formCard: {
+        display: 'flex',
+    },
+    verticalDivider: {
+        alignSelf: 'stretch',
+        height: 'auto',
+        marginLeft: theme.spacing(3),
+        marginRight: theme.spacing(8)
     }
   });
 
@@ -131,62 +141,68 @@ class AllContactsView extends Component {
             <div className={classes.content}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <Card>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel id="sort-by-label">Sort By</InputLabel>
-                        <Select
-                            className={classes.selectEmpty}
-                            labelId="sort-by-label"
-                            id="sort-by-select"
-                            value={ this.state.sort  }
-                            onChange={ this.sortContacts }
-                        >
-                            {
-                                Object.entries(config.userInfoStrings).map(([key, value]) => {
-                                    return(
-                                        <MenuItem value={key} key={key}>{value}</MenuItem>
-                                    )
-                                }) 
-                            }
-                        </Select>
-                    </FormControl>
-                    <Divider orientation="vertical"  />
-                    <FormControl className={classes.formControl}>
-                        <InputLabel id="filter-by-label">Filter By</InputLabel>
-                        <Select
-                            className={ classes.selectEmpty }
-                            labelId="filter-by-label"
-                            id="filter-by-select"
-                            value={ this.state.filterBy }
-                            onChange={ this.loadFilters }
-                        >
-                            {
-                                Object.entries(config.filterBy).map(([key, value]) => {
-                                    return (
-                                        <MenuItem value={key} key={key}>{value}</MenuItem>
-                                    )
-                                })
-                            }
-                        </Select>
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel id="filter-select-label">Filter</InputLabel>
-                        <Select
-                            className={ classes.selectEmpty }
-                            labelId="filter-select-label"
-                            id="filter-select"
-                            value={this.state.filter}
-                            onChange={this.filterContacts}
+                    <Card className={classes.formCard}>
+                        <CardHeader 
+                            title="Sort and Filter Options"
+                            avatar={
+                                <Avatar>
+                                    <Search/>
+                                </Avatar>
+                            }/>
+                        <FormControl className={classes.formControl}>
+                            <InputLabel id="sort-by-label">Sort By</InputLabel>
+                            <Select
+                                className={classes.selectEmpty}
+                                labelId="sort-by-label"
+                                id="sort-by-select"
+                                value={ this.state.sort  }
+                                onChange={ this.sortContacts }
                             >
                                 {
-                                    this.state.filterOptions.map((location) => {
+                                    Object.entries(config.userInfoStrings).map(([key, value]) => {
+                                        return(
+                                            <MenuItem value={key} key={key}>{value}</MenuItem>
+                                        )
+                                    }) 
+                                }
+                            </Select>
+                        </FormControl>
+                        <FormControl className={classes.formControl}>
+                            <InputLabel id="filter-by-label">Filter By</InputLabel>
+                            <Select
+                                className={ classes.selectEmpty }
+                                labelId="filter-by-label"
+                                id="filter-by-select"
+                                value={ this.state.filterBy }
+                                onChange={ this.loadFilters }
+                            >
+                                {
+                                    Object.entries(config.filterBy).map(([key, value]) => {
                                         return (
-                                            <MenuItem value={location} key={location}>{location}</MenuItem>
+                                            <MenuItem value={key} key={key}>{value}</MenuItem>
                                         )
                                     })
                                 }
                             </Select>
-                    </FormControl>
+                        </FormControl>
+                        <FormControl className={classes.formControl}>
+                            <InputLabel id="filter-select-label">Filter</InputLabel>
+                            <Select
+                                className={ classes.selectEmpty }
+                                labelId="filter-select-label"
+                                id="filter-select"
+                                value={this.state.filter}
+                                onChange={this.filterContacts}
+                                >
+                                    {
+                                        this.state.filterOptions.map((location) => {
+                                            return (
+                                                <MenuItem value={location} key={location}>{location}</MenuItem>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                        </FormControl>
                     </Card>
                 </Grid>
                 { (this.state.loading) ? 
