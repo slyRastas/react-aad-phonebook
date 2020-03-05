@@ -21,6 +21,7 @@ import Divider from '@material-ui/core/Divider';
 import { lookupSharepointUser, getContactDetail } from '../GraphService';
 import FormattedAddress from './FormattedAddress'
 import ContactDialogDetail from './ContactDialogDetail'
+import { CircularProgress } from '@material-ui/core';
 
 const classes = theme => ({
     expand: {
@@ -127,7 +128,7 @@ class OfficeCard extends Component {
                               aria-label="show more"
                               disabled={this.state.loading}>
                                   <Avatar>
-                                    <EmojiPeople/>
+                                    {this.state.loading ? <CircularProgress/> : <EmojiPeople/>}
                                   </Avatar>
                               </Button>
                         }
