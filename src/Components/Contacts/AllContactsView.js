@@ -5,9 +5,10 @@ import config from '../../Config'
 import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
-import { Select, FormControl, MenuItem, InputLabel, Card, CardHeader, CardContent, CircularProgress, Avatar } from '@material-ui/core';
+import { Select, FormControl, MenuItem, InputLabel, Card, CardHeader, CardContent, CircularProgress, Avatar, Button } from '@material-ui/core';
 import {Search} from '@material-ui/icons'
 import $ from 'jquery';
+import FilterButton from '../FilterButton'
 
 var sortJsonArray = require('sort-json-array')
 
@@ -37,31 +38,36 @@ const useStyles = theme => ({
     }
   });
 
+
 class AllContactsView extends Component {
     constructor(props) {
         super(props);
 
         var userInfo = config.userInfo.split(",")
 
+        var filter = {...config.filterBy}
+
         this.state = {
             contacts: [],
             sort: '',
-            filterBy: '',
-            filter: '',
-            filterOptions: [],
+            filter: filter,
+            filterSet: false,
             userInfo: userInfo,
             loading: false,
         };
 
         this.sortContacts = this.sortContacts.bind(this)
         this.filterContacts = this.filterContacts.bind(this);
+        this.findUnique = this.findUnique.bind(this);
+        this.getContacts = this.getContacts.bind(this);
     }
 
     async componentDidMount() {
         this.setState({
             loading: true,
         })
-        this.getContacts();
+        await this.getContacts();
+        this.loadFilters();
     }
 
     async getContacts() {
@@ -76,11 +82,14 @@ class AllContactsView extends Component {
             this.setState({
                 contacts: sortedContacts,
                 loading: false,
+                filterSet: false,
             });
         }
         catch(err) {
-            this.props.showError('ERROR', JSON.stringify(err));
+            //this.props.showError('ERROR', JSON.stringify(err));
+            console.log(err);
         }
+        
     }
 
     sortContacts = event => {
@@ -92,51 +101,48 @@ class AllContactsView extends Component {
         });
     }
 
-    loadFilters = event => {
-        if (event.target.value !== 'none') {
-            var lookup = {};
-            var items = this.state.contacts;
-            var result = [];
-            
-            for (var item, i = 0; (item = items[i++]);) {
-                var filter = item[event.target.value];
-                
-                if (!(filter in lookup)) {
-                    lookup[filter] = 1;
-                    result.push(filter);
-                }
-            }
-            
-            this.setState({
-                filterBy: event.target.value,
-                filterOptions: result,
-            })
-        }
-        else {
-            this.getContacts();
-            this.setState({
-                filterBy: 'none',
-                filter: '',
-                filterOptions: [],
-            })
-        }
-        
+    loadFilters() {
+        var filterBy = this.state.filter;
+        Object.keys(filterBy).forEach((key) => {
+            var options = this.findUnique(this.state.contacts, key)
+            filterBy[key] = options;
+        })
+        this.setState({
+            filter: filterBy,
+        })
     }
 
-    filterContacts = event => {
-        var filterBy = this.state.filterBy;
+    filterContacts(filterBy, value) {
         var filteredContacts = $.grep( this.state.contacts, function(contact) {
-            return contact[filterBy] === event.target.value;
+            return contact[filterBy] === value;
         });
 
         this.setState({
-            filter: event.target.value,
             contacts: filteredContacts,
+            filterSet: true,
         })
+    }
+
+    findUnique(items, target) {
+        var lookup = {};
+        //var items = this.state.contacts;
+        var result = [];
+        
+        for (var item, i = 0; (item = items[i++]);) {
+            var filter = item[target];
+            
+            if (!(filter in lookup)) {
+                lookup[filter] = 1;
+                result.push(filter);
+            }
+        }
+    
+        return result;
     }
 
     render() {
         const { classes } = this.props;
+        const _this = this;
         return (
             <div className={classes.content}>
             <Grid container spacing={3}>
@@ -163,46 +169,31 @@ class AllContactsView extends Component {
                                     Object.entries(config.userInfoStrings).map(([key, value]) => {
                                         return(
                                             <MenuItem value={key} key={key}>{value}</MenuItem>
-                                        )
+                                        );
                                     }) 
                                 }
                             </Select>
                         </FormControl>
+                        {Object.entries(this.state.filter).map(
+                            function(filter){
+                                return( <FilterButton 
+                                            key={filter[0]} 
+                                            filterSet={_this.state.filterSet} 
+                                            filterBy={filter[0]} 
+                                            filterOptions={filter[1]} 
+                                            filterContacts={_this.filterContacts}
+                                            />
+                                );
+                            }
+                        )
+                        }
                         <FormControl className={classes.formControl}>
-                            <InputLabel id="filter-by-label">Filter By</InputLabel>
-                            <Select
-                                className={ classes.selectEmpty }
-                                labelId="filter-by-label"
-                                id="filter-by-select"
-                                value={ this.state.filterBy }
-                                onChange={ this.loadFilters }
+                            <Button 
+                                id="clear-filters"
+                                onClick={this.getContacts}
                             >
-                                {
-                                    Object.entries(config.filterBy).map(([key, value]) => {
-                                        return (
-                                            <MenuItem value={key} key={key}>{value}</MenuItem>
-                                        )
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel id="filter-select-label">Filter</InputLabel>
-                            <Select
-                                className={ classes.selectEmpty }
-                                labelId="filter-select-label"
-                                id="filter-select"
-                                value={this.state.filter}
-                                onChange={this.filterContacts}
-                                >
-                                    {
-                                        this.state.filterOptions.map((location) => {
-                                            return (
-                                                <MenuItem value={location} key={location}>{location}</MenuItem>
-                                            )
-                                        })
-                                    }
-                                </Select>
+                                Clear Filters
+                            </Button>
                         </FormControl>
                         </CardContent>
                     </Card>
