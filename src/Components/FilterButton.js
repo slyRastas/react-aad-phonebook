@@ -12,16 +12,18 @@ const useStyles = theme => ({
     formControl: {
       margin: theme.spacing(4),
       minWidth: '100px',
+      display: 'inline-block',
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
+      minWidth: '110px',
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3),
+        padding: theme.spacing(2),
       },
     loading: {
-        marginTop: theme.spacing(4)
+        marginTop: theme.spacing(2)
     },
     formCard: {
         display: 'flex',
@@ -78,6 +80,7 @@ class FilterButton extends Component {
                     id={"filter-by-" + this.props.filterBy}
                     value={ this.props.filterSet ? this.state.value : '' }
                     onChange={ this.handleChange }
+                    autoWidth
                     >
                         {
                             Object.entries(this.props.filterOptions).map((option) => {

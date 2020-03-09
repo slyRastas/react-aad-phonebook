@@ -5,7 +5,7 @@ import config from '../../Config'
 import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
-import { Select, FormControl, MenuItem, InputLabel, Card, CardHeader, CardContent, CircularProgress, Avatar, Button } from '@material-ui/core';
+import { Select, FormControl, MenuItem, InputLabel, Card, CardContent, CircularProgress, Button, Typography } from '@material-ui/core';
 import {Search} from '@material-ui/icons'
 import $ from 'jquery';
 import FilterButton from '../FilterButton'
@@ -15,7 +15,7 @@ var sortJsonArray = require('sort-json-array')
 const useStyles = theme => ({
     formControl: {
       margin: theme.spacing(4),
-      minWidth: '100px',
+      minWidth: '100px',      
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
@@ -35,6 +35,16 @@ const useStyles = theme => ({
         height: 'auto',
         marginLeft: theme.spacing(3),
         marginRight: theme.spacing(8)
+    },
+    button: {
+        margin: 'auto',
+        marginTop: '48px',
+        height: '48px',
+        verticalAlign: 'unset',
+        minWidth: '50px'
+    },
+    cardTitle: {
+        marginLeft: theme.spacing(2),
     }
   });
 
@@ -146,34 +156,39 @@ class AllContactsView extends Component {
         return (
             <div className={classes.content}>
             <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                     <Card className={classes.formCard}>
-                        <CardHeader 
-                            title="Sort and Filter Options"
-                            avatar={
-                                <Avatar>
-                                    <Search/>
-                                </Avatar>
-                            }/>
                         <CardContent>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel id="sort-by-label">Sort By</InputLabel>
-                            <Select
-                                className={classes.selectEmpty}
-                                labelId="sort-by-label"
-                                id="sort-by-select"
-                                value={ this.state.sort  }
-                                onChange={ this.sortContacts }
-                            >
-                                {
-                                    Object.entries(config.userInfoStrings).map(([key, value]) => {
-                                        return(
-                                            <MenuItem value={key} key={key}>{value}</MenuItem>
-                                        );
-                                    }) 
-                                }
-                            </Select>
-                        </FormControl>
+                            <Typography className={classes.cardTitle}>
+                                <Search/> - Sorting
+                            </Typography>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel id="sort-by-label">Sort By</InputLabel>
+                                <Select
+                                    className={classes.selectEmpty}
+                                    labelId="sort-by-label"
+                                    id="sort-by-select"
+                                    value={ this.state.sort  }
+                                    onChange={ this.sortContacts }
+                                >
+                                    {
+                                        Object.entries(config.userInfoStrings).map(([key, value]) => {
+                                            return(
+                                                <MenuItem value={key} key={key}>{value}</MenuItem>
+                                            );
+                                        }) 
+                                    }
+                                </Select>
+                            </FormControl>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={6}>
+                    <Card className={classes.formCard}>
+                        <CardContent>
+                            <Typography className={classes.formCard}>
+                                <Search/> - Filtering
+                            </Typography>
                         {Object.entries(this.state.filter).map(
                             function(filter){
                                 return( <FilterButton 
@@ -187,12 +202,12 @@ class AllContactsView extends Component {
                             }
                         )
                         }
-                        <FormControl className={classes.formControl}>
+                        <FormControl className={classes.button}>
                             <Button 
                                 id="clear-filters"
                                 onClick={this.getContacts}
                             >
-                                Clear Filters
+                                Clear
                             </Button>
                         </FormControl>
                         </CardContent>
