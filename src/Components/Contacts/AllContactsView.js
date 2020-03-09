@@ -6,7 +6,10 @@ import { getContactsInfo } from '../GraphService'
 import '@fortawesome/fontawesome-free/css/all.css'
 import ContactCard from './ContactCard';
 import { Select, FormControl, MenuItem, InputLabel, Card, CardContent, CircularProgress, Button, Typography } from '@material-ui/core';
-import {Search} from '@material-ui/icons'
+import { 
+    FilterCenterFocus,
+    Sort,
+} from '@material-ui/icons'
 import $ from 'jquery';
 import FilterButton from '../FilterButton'
 
@@ -45,6 +48,9 @@ const useStyles = theme => ({
     },
     cardTitle: {
         marginLeft: theme.spacing(2),
+    },
+    icon: {
+        marginRight: theme.spacing(2)
     }
   });
 
@@ -160,7 +166,7 @@ class AllContactsView extends Component {
                     <Card className={classes.formCard}>
                         <CardContent>
                             <Typography className={classes.cardTitle}>
-                                <Search/> - Sorting
+                                <Sort className={classes.icon}/> Sorting
                             </Typography>
                             <FormControl className={classes.formControl}>
                                 <InputLabel id="sort-by-label">Sort By</InputLabel>
@@ -187,7 +193,7 @@ class AllContactsView extends Component {
                     <Card className={classes.formCard}>
                         <CardContent>
                             <Typography className={classes.formCard}>
-                                <Search/> - Filtering
+                                <FilterCenterFocus className={classes.icon}/> Filtering
                             </Typography>
                         {Object.entries(this.state.filter).map(
                             function(filter){
