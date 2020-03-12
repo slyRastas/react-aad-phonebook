@@ -23,7 +23,8 @@ import {
     Home,
     AccountCircle,
     Contacts,
-    Business
+    Business,
+    Feedback,
 } from '@material-ui/icons';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu'
@@ -282,6 +283,12 @@ class ApplicationBar extends Component {
                                 </ListItem>
                                 </div>
                             )}
+                            <ListItem button className={classes.listitem} key={"feedback"} onClick={this.handleDrawerClose} component={RouterNavLink} to="/feedback">
+                                <ListItemIcon >
+                                    <Feedback />
+                                </ListItemIcon>
+                                <ListItemText primary="Feedback" />
+                            </ListItem>
                         </List>
                 </Drawer>
             </div>

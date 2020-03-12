@@ -14,6 +14,8 @@ import ApplicationBar from './Components/ApplicationBar'
 import { createBrowserHistory } from 'history'
 import AllOfficeView from './Components/Contacts/AllOfficeView'
 
+import Feedback from './Components/Feedback';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -166,6 +168,10 @@ class App extends Component {
                       showError={this.setErrorMessage.bind(this)}
                       user={this.state.user} />
                     } />
+                <Route exact path="/feedback"
+                  render={(props) => 
+                  <Feedback {...props} />
+                } />
             </Container>
           </div>
         </Router>
